@@ -4,6 +4,7 @@ Prefer existing mechanisms over creating new code, files, dependencies, abstract
 Build strong, performant, resource-efficient solutions that are compact, readable, and low-maintenance.
 
 Follow [CONTRIBUTING.md](CONTRIBUTING.md) for development, build, and restart instructions.
+Commit completed changes before starting a separate task.
 
 ## Upstream compatibility
 

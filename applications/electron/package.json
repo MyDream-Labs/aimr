@@ -32,7 +32,7 @@
           "workbench.startupEditor": "none",
           "toolbar.showToolbar": false,
           "workbench.statusBar.visible": false,
-          "window.menuBarVisibility": "visible"
+          "window.menuBarVisibility": "toggle"
         },
         "electron": {
           "appUserModelId": "site.aimr.app",

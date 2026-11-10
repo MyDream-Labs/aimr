@@ -13,6 +13,7 @@ import { AIRegistryConfiguration } from '@theia/ai-registry/lib/common/ai-regist
 import { WidgetFactory } from '@theia/core/lib/browser';
 import { AboutDialog } from '@theia/core/lib/browser/about-dialog';
 import { FrontendApplicationContribution } from '@theia/core/lib/browser/frontend-application-contribution';
+import { SidebarTopMenuWidgetFactory } from '@theia/core/lib/browser/shell/sidebar-menu-widget';
 import { applyBranding } from './aimr-config.js';
 import { CommandContribution } from '@theia/core/lib/common/command';
 import { ContainerModule } from '@theia/core/shared/inversify';
@@ -24,9 +25,13 @@ import { AIMRContribution } from './aimr-contribution.js';
 import { AIMRGettingStartedWidget } from './aimr-getting-started-widget.js';
 import { AIMRThemeContribution } from './aimr-theme-contribution.js';
 import { AIMRStartupContribution } from './aimr-startup-contribution.js';
+import { AIMRSidebarMenuWidget } from './aimr-sidebar-menu-widget.js';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     applyBranding();
+
+    bind(AIMRSidebarMenuWidget).toSelf();
+    rebind(SidebarTopMenuWidgetFactory).toAutoFactory(AIMRSidebarMenuWidget);
 
     bind(AIMRThemeContribution).toSelf().inSingletonScope();
     bind(FrontendApplicationContribution).toService(AIMRThemeContribution);
@@ -45,7 +50,7 @@ export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     }
 
     bind(AIMRContribution).toSelf().inSingletonScope();
-    [CommandContribution, MenuContribution].forEach(serviceIdentifier =>
+    [CommandContribution, MenuContribution, FrontendApplicationContribution].forEach(serviceIdentifier =>
         bind(serviceIdentifier).toService(AIMRContribution)
     );
 

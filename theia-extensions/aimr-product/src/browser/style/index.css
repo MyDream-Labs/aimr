@@ -174,3 +174,13 @@ ul.theia-aboutExtensions {
     padding: 0;
     margin-left: 10px;
 }
+button.aimr-menu-toggle {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+button.aimr-menu-toggle[aria-pressed='true'] i {
+    color: var(--theia-activityBar-foreground);
+}

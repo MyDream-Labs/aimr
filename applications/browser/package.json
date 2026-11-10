@@ -29,7 +29,7 @@
           "workbench.startupEditor": "none",
           "toolbar.showToolbar": false,
           "workbench.statusBar.visible": false,
-          "window.menuBarVisibility": "visible",
+          "window.menuBarVisibility": "toggle",
           "files.enableTrash": false,
           "security.workspace.trust.enabled": false
         },
