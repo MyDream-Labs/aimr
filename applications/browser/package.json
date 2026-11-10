@@ -22,6 +22,7 @@
     "frontend": {
       "config": {
         "applicationName": "\u2316AIMR",
+        "defaultTheme": { "light": "aimr-light", "dark": "aimr-dark" },
         "warnOnPotentiallyInsecureHostPattern": false,
         "preferences": {
           "toolbar.showToolbar": true,

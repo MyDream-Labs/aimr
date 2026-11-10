@@ -59,7 +59,7 @@ for (const app of ['electron', 'electron-next']) {
     const splashIcon = svg.replace('<svg ', '<svg x="181" y="63" width="84" height="84" ');
     write(`applications/${app}/resources/AIMRSplash.svg`,
         '<svg xmlns="http://www.w3.org/2000/svg" width="446" height="276" viewBox="0 0 446 276">\n'
-        + '<rect width="446" height="276" fill="#ffffff"/>\n' + splashIcon
+        + '<rect width="446" height="276" fill="#f5f5f5"/>\n' + splashIcon
         + '\n<text x="223" y="184" fill="#111111" font-family="Arial,sans-serif" font-size="30" '
         + 'font-weight="600" text-anchor="middle">AIMR</text>\n</svg>\n');
 }

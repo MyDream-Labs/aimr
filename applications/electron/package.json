@@ -24,6 +24,7 @@
     "frontend": {
       "config": {
         "applicationName": "\u2316AIMR",
+        "defaultTheme": { "light": "aimr-light", "dark": "aimr-dark" },
         "reloadOnReconnect": true,
         "preferences": {
           "toolbar.showToolbar": true
@@ -168,7 +169,7 @@
     "build:prod": "yarn --cwd ../.. workspace aimr-product-ext build && yarn -s rebuild && theia build --app-target=\"electron\"",
     "rebuild": "theia rebuild:electron --cacheRoot ../..",
     "watch": "concurrently -n compile,build \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
-    "start": "electron scripts/theia-electron-main.js --plugins=local-dir:../../plugins",
+    "start": "electron scripts/theia-electron-main.js --plugins=local-dir:../../plugins --ozone-platform=x11",
     "start:debug": "yarn start --log-level=debug",
     "package": "yarn clean:dist && yarn rebuild && electron-builder -c.mac.identity=null --publish never",
     "package:prod": "yarn deploy",

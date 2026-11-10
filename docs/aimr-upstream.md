@@ -8,6 +8,10 @@ The current AIMR icon color is `#0d82ff`: use `yarn icons:generate --color '#0d8
 
 All applications use the generated `theia-extensions/aimr-product/resources/preload.html` through `theia.generator.config.preloadTemplate`; this replaces the upstream loading logo without editing framework or upstream preload sources.
 
+Desktop development start scripts pass `--ozone-platform=x11` to restore window positions through XWayland on Linux; native Wayland does not support positioning windows.
+
+AIMR Light/Dark are registered in `aimr-product/src/browser/aimr-theme-contribution.ts` using Theia's theme services. They derive from the installed Theia themes and override only status bar colors; application `defaultTheme` selects them. Debugging colors and user-selected themes are preserved.
+
 Develop features in AIMR-owned extensions (`theia-extensions/aimr-*`). Keep changes to upstream application manifests and packaging scripts limited to integration and configuration. Keep upstream-owned `theia-extensions/product`, `launcher`, `updater`, shared `configs`, and framework sources unchanged for product features; document any necessary exceptions here. Never edit `node_modules`, `lib`, `src-gen` or `dist` directly.
 
 When updating the upstream Theia IDE, review changes in the base About dialog and Getting Started widget APIs, then build `aimr-product-ext` and all application targets. Keep the upstream `theia-extensions/product` sources intact; port a needed upstream behavior into the AIMR extension deliberately.
