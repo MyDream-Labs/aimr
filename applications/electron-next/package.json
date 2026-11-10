@@ -28,7 +28,12 @@
         "brandingVariant": "next",
         "reloadOnReconnect": true,
         "preferences": {
-          "toolbar.showToolbar": true,
+          "window.zoomLevel": 1,
+          "ai-features.AiEnable.enableAI": true,
+          "workbench.startupEditor": "none",
+          "toolbar.showToolbar": false,
+          "workbench.statusBar.visible": false,
+          "window.menuBarVisibility": "visible",
           "ai-features.chat.tokenUsageIndicator.enabled": true
         },
         "electron": {
@@ -38,7 +43,7 @@
           "splashScreenOptions": {
             "content": "resources/AIMRSplash.svg",
             "height": 276,
-            "width": 446
+            "width": 276
           }
         }
       }

@@ -8,7 +8,7 @@ yarn electron build
 yarn electron start
 ```
 
-Use `electron-next` or `browser` instead of `electron` for other targets. Application builds compile `aimr-product-ext` automatically. For changes in other extensions, run `yarn build:extensions` first. Run desktop and browser builds sequentially: they share native dependencies.
+For the desktop MVP, build and run only `electron`. Build `electron-next` or `browser` only when explicitly requested. Application builds compile `aimr-product-ext` automatically. For changes in other extensions, run `yarn build:extensions` first. Run desktop and browser builds sequentially: they share native dependencies.
 
 Develop AIMR in `theia-extensions/aimr-*`; keep application changes limited to configuration and packaging. See [upstream compatibility and repository boundaries](docs/aimr-upstream.md).
 

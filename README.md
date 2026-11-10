@@ -24,7 +24,7 @@ Run an application during development with `yarn electron start`, `yarn electron
 ## Project structure
 
 - `applications/electron` — desktop application.
-- `applications/electron-next` — second desktop build; its product name and profile are also AIMR.
+- `applications/electron-next` — desktop build reserved for testing upcoming Theia versions; not needed for routine desktop MVP builds. Its product name and profile are also AIMR.
 - `applications/browser` — browser application.
 - `theia-extensions/aimr-product` — AIMR-owned branding and product UI extension.
 - `theia-extensions` — product and integration extensions built on Theia.

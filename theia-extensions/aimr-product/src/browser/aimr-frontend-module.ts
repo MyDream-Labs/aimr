@@ -23,12 +23,15 @@ import { AIMRAIRegistryConfiguration } from './aimr-ai-registry-configuration.js
 import { AIMRContribution } from './aimr-contribution.js';
 import { AIMRGettingStartedWidget } from './aimr-getting-started-widget.js';
 import { AIMRThemeContribution } from './aimr-theme-contribution.js';
+import { AIMRStartupContribution } from './aimr-startup-contribution.js';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     applyBranding();
 
     bind(AIMRThemeContribution).toSelf().inSingletonScope();
     bind(FrontendApplicationContribution).toService(AIMRThemeContribution);
+    bind(AIMRStartupContribution).toSelf().inSingletonScope();
+    bind(FrontendApplicationContribution).toService(AIMRStartupContribution);
 
     bind(AIMRGettingStartedWidget).toSelf();
     bind(WidgetFactory).toDynamicValue(context => ({

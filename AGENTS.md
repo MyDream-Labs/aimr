@@ -10,6 +10,6 @@ Follow [CONTRIBUTING.md](CONTRIBUTING.md) for development, build, and restart in
 - Build AIMR through our extensions (`theia-extensions/aimr-*`) and application configuration.
 - Reuse Theia APIs, contributions, and DI; keep subclass overrides small. Avoid copying upstream implementations.
 - Do not modify Theia core, dependencies, generated files, or upstream product extensions.
-- Keep necessary upstream configuration/build changes minimal; document exceptions in `docs/aimr-upstream.md`.
+- Keep upstream configuration/build changes minimal; consult and update the implementation map in `docs/aimr-upstream.md`.
 - Keep AIMR branding consistent across all builds. Preserve third-party licenses and attribution.
 - Verify affected builds after changes; run builds that rebuild shared native dependencies sequentially.

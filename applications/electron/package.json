@@ -27,7 +27,12 @@
         "defaultTheme": { "light": "aimr-light", "dark": "aimr-dark" },
         "reloadOnReconnect": true,
         "preferences": {
-          "toolbar.showToolbar": true
+          "window.zoomLevel": 1,
+          "ai-features.AiEnable.enableAI": true,
+          "workbench.startupEditor": "none",
+          "toolbar.showToolbar": false,
+          "workbench.statusBar.visible": false,
+          "window.menuBarVisibility": "visible"
         },
         "electron": {
           "appUserModelId": "site.aimr.app",
@@ -35,7 +40,7 @@
           "splashScreenOptions": {
             "content": "resources/AIMRSplash.svg",
             "height": 276,
-            "width": 446
+            "width": 276
           },
           "uriScheme": "aimr"
         }

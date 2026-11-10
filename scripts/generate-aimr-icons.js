@@ -45,23 +45,19 @@ write('theia-extensions/aimr-product/resources/preload.html', `<style>
         background: #fff; color: #111; font-family: Arial, sans-serif;
     }
     .theia-preload::after { content: none; }
-    .aimr-loading { text-align: center; }
-    .aimr-loading svg { display: block; width: 84px; height: 84px; margin: auto; }
-    .aimr-loading p { margin: 26px 0 0; font-size: 30px; font-weight: 600; }
+    .aimr-loading svg { display: block; width: 240px; height: 240px; }
 </style>
 <link rel="icon" href="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}">
-<div class="aimr-loading" role="status" aria-label="Loading AIMR">${svg}<p>AIMR</p></div>
+<div class="aimr-loading" role="status" aria-label="Loading AIMR">${svg}</div>
 `);
 for (const app of ['electron', 'electron-next']) {
     for (const name of ['512x512.png', 'LinuxLauncherIcons/512x512.png', 'WindowIcon/512-512.png']) {
         write(`applications/${app}/resources/icons/${name}`, png);
     }
-    const splashIcon = svg.replace('<svg ', '<svg x="181" y="63" width="84" height="84" ');
+    const splashIcon = svg.replace('<svg ', '<svg x="18" y="18" width="240" height="240" ');
     write(`applications/${app}/resources/AIMRSplash.svg`,
-        '<svg xmlns="http://www.w3.org/2000/svg" width="446" height="276" viewBox="0 0 446 276">\n'
-        + '<rect width="446" height="276" fill="#f5f5f5"/>\n' + splashIcon
-        + '\n<text x="223" y="184" fill="#111111" font-family="Arial,sans-serif" font-size="30" '
-        + 'font-weight="600" text-anchor="middle">AIMR</text>\n</svg>\n');
+        '<svg xmlns="http://www.w3.org/2000/svg" width="276" height="276" viewBox="0 0 276 276">\n'
+        + '<rect width="276" height="276" fill="#f5f5f5"/>\n' + splashIcon + '\n</svg>\n');
 }
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'aimr-icons-'));
 try {
