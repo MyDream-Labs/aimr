@@ -39,6 +39,19 @@ const productIcons = 'theia-extensions/aimr-product/src/browser';
 write(`${productIcons}/icons/aimr-icon.svg`, svg);
 write(`${productIcons}/aimr-icon.svg`, svg);
 write(`${productIcons}/icons/aimr-icon.png`, png);
+write('theia-extensions/aimr-product/resources/preload.html', `<style>
+    .theia-preload {
+        position: absolute; inset: 0; display: grid; place-items: center;
+        background: #fff; color: #111; font-family: Arial, sans-serif;
+    }
+    .theia-preload::after { content: none; }
+    .aimr-loading { text-align: center; }
+    .aimr-loading svg { display: block; width: 84px; height: 84px; margin: auto; }
+    .aimr-loading p { margin: 26px 0 0; font-size: 30px; font-weight: 600; }
+</style>
+<link rel="icon" href="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}">
+<div class="aimr-loading" role="status" aria-label="Loading AIMR">${svg}<p>AIMR</p></div>
+`);
 for (const app of ['electron', 'electron-next']) {
     for (const name of ['512x512.png', 'LinuxLauncherIcons/512x512.png', 'WindowIcon/512-512.png']) {
         write(`applications/${app}/resources/icons/${name}`, png);

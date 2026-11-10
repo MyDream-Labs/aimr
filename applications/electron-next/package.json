@@ -52,7 +52,7 @@
     },
     "generator": {
       "config": {
-        "preloadTemplate": "./resources/preload.html"
+        "preloadTemplate": "../../theia-extensions/aimr-product/resources/preload.html"
       }
     }
   },

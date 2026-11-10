@@ -6,6 +6,8 @@ The canonical icon source is `theia-extensions/aimr-product/resources/favicon.sv
 
 The current AIMR icon color is `#0d82ff`: use `yarn icons:generate --color '#0d82ff'` to regenerate the current product assets. The canonical SVG retains its original color.
 
+All applications use the generated `theia-extensions/aimr-product/resources/preload.html` through `theia.generator.config.preloadTemplate`; this replaces the upstream loading logo without editing framework or upstream preload sources.
+
 Develop features in AIMR-owned extensions (`theia-extensions/aimr-*`). Keep changes to upstream application manifests and packaging scripts limited to integration and configuration. Keep upstream-owned `theia-extensions/product`, `launcher`, `updater`, shared `configs`, and framework sources unchanged for product features; document any necessary exceptions here. Never edit `node_modules`, `lib`, `src-gen` or `dist` directly.
 
 When updating the upstream Theia IDE, review changes in the base About dialog and Getting Started widget APIs, then build `aimr-product-ext` and all application targets. Keep the upstream `theia-extensions/product` sources intact; port a needed upstream behavior into the AIMR extension deliberately.
