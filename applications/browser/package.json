@@ -3,7 +3,7 @@
   "name": "theia-ide-browser-app",
   "description": "AIMR AI-powered workspace",
   "productName": "AIMR",
-  "version": "1.77.0",
+  "version": "0.1.0-alpha.1",
   "license": "MIT",
   "author": "MyDream Labs LLC",
   "homepage": "https://aimr.site",
@@ -125,7 +125,7 @@
     "fs-extra": "^9.1.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "aimr-product-ext": "1.77.0"
+    "aimr-product-ext": "0.1.0-alpha.1"
   },
   "devDependencies": {
     "@theia/bundle-plugin": "1.77.0",

@@ -31,6 +31,7 @@ describe('AIMR MCP injections', () => {
         try {
             backendGlobal.serverAddress = Promise.resolve({ address: '127.0.0.1', port: 12345, family: 'IPv4' });
             const sdk = await root.get(AIMRCodexFactory)();
+            assert.equal(sdk.options.codexPathOverride, 'codex');
             assert.equal(sdk.options.config.mcp_servers.ide.url, 'http://127.0.0.1:12345/mcp');
             assert.equal(sdk.options.config.mcp_servers.ide.required, true);
             assert.equal(sdk.options.config.mcp_servers.ide.default_tools_approval_mode, 'approve');

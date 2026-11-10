@@ -26,6 +26,12 @@ files:
 extraResources:
   - from: ../../plugins
     to: app/plugins
+  - from: ../../LICENSE
+    to: LICENSE
+  - from: ../../NOTICE.md
+    to: NOTICE.md
+  - from: ../../node_modules/@openai/codex-sdk/LICENSE
+    to: licenses/codex-sdk-LICENSE
 
 win:
   icon: resources/icon.ico
@@ -43,11 +49,15 @@ mac:
     - dmg
     - zip
 linux:
+  executableName: aimr
+  executableArgs: ["--ozone-platform=x11"]
+  syncDesktopName: true
   icon: resources/icons
   category: Development
   mimeTypes:
     - inode/directory
   vendor: MyDream Labs LLC
+  maintainer: MyDream Labs LLC <support@distill.codes>
   target:
     - deb
     - AppImage
@@ -63,13 +73,14 @@ nsis:
   uninstallerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   allowToChangeInstallationDirectory: true
   runAfterFinish: false
-  artifactName: ${productName}Setup.${ext}
+  artifactName: ${productName}-${version}-${os}-${arch}-Setup.${ext}
   license: LICENSE
 dmg:
-  artifactName: ${productName}.${ext}
+  artifactName: ${productName}-${version}-${os}-${arch}.${ext}
 deb:
-  artifactName: ${productName}.${ext}
+  packageName: aimr
+  artifactName: ${productName}-${version}-${os}-${arch}.${ext}
 appImage:
-  artifactName: ${productName}.${ext}
+  artifactName: ${productName}-${version}-${os}-${arch}.${ext}
 
 afterPack: ./scripts/after-pack.js

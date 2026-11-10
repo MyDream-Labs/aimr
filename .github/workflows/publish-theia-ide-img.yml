@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    if: github.repository == 'eclipse-theia/theia-ide'
     name: Build and push Theia IDE image to Github Packages
     runs-on: ubuntu-latest
 

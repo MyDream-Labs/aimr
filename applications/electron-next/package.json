@@ -3,7 +3,7 @@
   "name": "theia-ide-next-electron-app",
   "description": "AI-powered workspace for work and business",
   "productName": "AIMR",
-  "version": "1.77.0",
+  "version": "0.1.0-alpha.1",
   "main": "scripts/theia-electron-main.js",
   "license": "MIT",
   "author": "MyDream Labs LLC",
@@ -140,8 +140,8 @@
     "fs-extra": "^9.1.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "theia-ide-launcher-ext": "1.77.0",
-    "aimr-product-ext": "1.77.0"
+    "theia-ide-launcher-ext": "0.1.0-alpha.1",
+    "aimr-product-ext": "0.1.0-alpha.1"
   },
   "devDependencies": {
     "@theia/bundle-plugin": "1.77.0",

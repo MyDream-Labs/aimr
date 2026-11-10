@@ -17,6 +17,7 @@ export const createAIMRCodex: AIMRCodexFactory = async () => {
     if (!address) { throw new Error('AIMR backend address is unavailable'); }
     const token = process.env[ElectronSecurityToken];
     return new Codex({
+        codexPathOverride: 'codex',
         env: { ...process.env, AIMR_MCP_COOKIE: token ? `${ElectronSecurityToken}=${encodeURIComponent(token)}` : '' },
         config: { mcp_servers: { ide: {
         url: `http://127.0.0.1:${address.port}/mcp`,

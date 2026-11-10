@@ -24,4 +24,6 @@ Before committing, run the relevant lint/build checks. After application changes
 
 See [IDE control coverage](docs/ide-control-coverage.md) for supported operations, verification and open questions.
 
+See [AIMR releases](docs/releasing.md) for production packaging and GitHub publication.
+
 MCP smoke checks: `yarn workspace aimr-product-ext test` after building. To include the live IDE control tests, supply `AIMR_MCP_URL` and `AIMR_MCP_COOKIE` for an isolated running Electron profile with an open temporary workspace. These are per-process credentials; do not save them in repository files or logs.

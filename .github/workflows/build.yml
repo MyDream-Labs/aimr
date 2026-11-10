@@ -24,6 +24,7 @@ on:
 
 jobs:
   build:
+    if: github.repository == 'eclipse-theia/theia-ide'
     name: ${{ matrix.os }}, Node.js v${{ matrix.node }}
 
     strategy:

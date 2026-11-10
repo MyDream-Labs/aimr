@@ -1,0 +1,95 @@
+name: AIMR Linux release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aimr-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    env:
+      CC: clang-15
+      CXX: clang++-15
+      NODE_OPTIONS: --max_old_space_size=6144
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Verify version tag
+        if: github.ref_type == 'tag'
+        run: test "$GITHUB_REF_NAME" = "v$(node -p "require('./applications/electron/package.json').version")"
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 24.x
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: corepack yarn install --frozen-lockfile --network-timeout 100000
+      - name: Build and test
+        run: |
+          corepack yarn build:extensions
+          corepack yarn workspace aimr-product-ext lint
+          corepack yarn workspace aimr-product-ext test
+          corepack yarn download:plugins
+          corepack yarn electron build:prod
+          corepack yarn electron package --linux --x64
+      - name: Smoke-test packaged application outside the checkout
+        shell: bash
+        run: |
+          binary=$(find "$GITHUB_WORKSPACE/applications/electron/dist" -maxdepth 1 -name 'AIMR-*.AppImage')
+          profile=$(mktemp -d)
+          mkdir "$profile/workspace"
+          export THEIA_CONFIG_DIR="$profile/config"
+          cd "$RUNNER_TEMP"
+          xvfb-run -a bash -euo pipefail -c '
+            setsid "$1" --appimage-extract-and-run "$2/workspace" --electronUserData="$2/electron" --ozone-platform=x11 > "$2/startup.log" 2>&1 &
+            pid=$!
+            trap "kill -- -$pid 2>/dev/null || true" EXIT
+            for attempt in {1..90}; do
+              if grep -q "application state.*ready" "$2/startup.log"; then exit 0; fi
+              if ! kill -0 "$pid" 2>/dev/null; then break; fi
+              sleep 1
+            done
+            cat "$2/startup.log"
+            exit 1
+          ' _ "$binary" "$profile"
+      - name: Checksums
+        working-directory: applications/electron/dist
+        run: sha256sum AIMR-*.AppImage AIMR-*.deb > SHA256SUMS
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: aimr-linux-x64
+          if-no-files-found: error
+          path: |
+            applications/electron/dist/AIMR-*.AppImage
+            applications/electron/dist/AIMR-*.deb
+            applications/electron/dist/SHA256SUMS
+
+  draft:
+    needs: build
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: aimr-linux-x64
+          path: release
+      - name: Create draft prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(node -p "require('./applications/electron/package.json').version")
+          tag="v$version"
+          gh release create "$tag" release/* --target "$GITHUB_SHA" --draft --prerelease \
+            --title "AIMR $version" \
+            --notes "Linux x64 preview. Requires Codex CLI on PATH and an existing Codex login. IDE control supports one MCP client at a time. Automatic updates are not enabled."

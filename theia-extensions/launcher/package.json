@@ -1,6 +1,6 @@
 {
   "name": "theia-ide-launcher-ext",
-  "version": "1.77.0",
+  "version": "0.1.0-alpha.1",
   "keywords": [
     "theia-extension"
   ],

@@ -6,6 +6,7 @@ on:
     - cron: "0 3 * * 1" # Runs every monday at 3am
 jobs:
   build:
+    if: github.repository == 'eclipse-theia/theia-ide'
     name: Build ${{ matrix.os }} next
     strategy:
       fail-fast: false

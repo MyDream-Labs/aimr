@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "aimr-product-ext",
-  "version": "1.77.0",
+  "version": "0.1.0-alpha.1",
   "description": "AIMR product branding",
   "type": "module",
   "dependencies": {
