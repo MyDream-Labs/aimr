@@ -5,6 +5,7 @@
   "description": "AIMR product branding",
   "type": "module",
   "dependencies": {
+    "@theia/ai-chat": "1.77.0",
     "@theia/ai-chat-ui": "1.77.0",
     "@theia/ai-ide": "1.77.0",
     "@theia/ai-registry": "1.77.0",
@@ -21,6 +22,7 @@
   },
   "theiaExtensions": [{
     "frontend": "lib/browser/aimr-frontend-module",
+    "backend": "lib/node/aimr-backend-module",
     "electronMain": "lib/electron-main/aimr-main-module"
   }],
   "license": "MIT",

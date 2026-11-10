@@ -85,6 +85,7 @@
     "theia-extensions/*"
   ],
   "resolutions": {
+    "@openai/codex-sdk": "0.167.0",
     "@types/puppeteer": "^5.4.7",
     "**/yauzl": "^3.3.1",
     "**/@tootallnate/once": "^2.0.1",
