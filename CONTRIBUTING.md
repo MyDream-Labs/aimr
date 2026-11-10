@@ -21,3 +21,7 @@ yarn icons:generate --color '#0d82ff'
 Icon generation requires Python 3 with Pillow. Without `--color`, the source colors are preserved.
 
 Before committing, run the relevant lint/build checks. After application changes, rebuild and restart the running development instance. Avoid unrelated changes and preserve upstream licenses.
+
+See [IDE control coverage](docs/ide-control-coverage.md) for supported operations, verification and open questions.
+
+MCP smoke checks: `yarn workspace aimr-product-ext test` after building. To include the live IDE control tests, supply `AIMR_MCP_URL` and `AIMR_MCP_COOKIE` for an isolated running Electron profile with an open temporary workspace. These are per-process credentials; do not save them in repository files or logs.

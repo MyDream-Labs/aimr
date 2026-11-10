@@ -8,6 +8,11 @@
  ********************************************************************************/
 
 import '../../src/browser/style/index.css';
+import { MCPFrontendContribution } from '@theia/ai-mcp-server/lib/browser/mcp-frontend-contribution';
+import { AIMRCommandsMCPContribution } from './aimr-commands-mcp-contribution.js';
+import { AIMRExtensionsMCPContribution } from './aimr-extensions-mcp-contribution.js';
+import { AIMRLayoutMCPContribution } from './aimr-layout-mcp-contribution.js';
+import { bindAIMRSettings } from './aimr-settings-mcp-contribution.js';
 
 import { ChatViewWidget } from '@theia/ai-chat-ui/lib/browser/chat-view-widget';
 import { AIRegistryConfiguration } from '@theia/ai-registry/lib/common/ai-registry-configuration';
@@ -33,6 +38,10 @@ import { AIMRAgentService, AIMR_AGENT_SERVICE_PATH } from '../common/aimr-agent-
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     applyBranding();
+
+    bindAIMRSettings(bind);
+    [AIMRCommandsMCPContribution, AIMRExtensionsMCPContribution, AIMRLayoutMCPContribution].forEach(contribution =>
+        bind(MCPFrontendContribution).to(contribution).inSingletonScope());
 
     rebind(ChatViewWidget).toSelf().onActivation((_context, widget) => {
         pin(widget.title);

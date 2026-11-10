@@ -5,6 +5,12 @@
   "description": "AIMR product branding",
   "type": "module",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@openai/codex-sdk": "0.167.0",
+    "@theia/plugin-ext": "1.77.0",
+    "@theia/ai-codex": "1.77.0",
+    "@theia/ai-mcp-server": "1.77.0",
+    "zod": "^4.4.3",
     "@theia/ai-chat": "1.77.0",
     "@theia/ai-chat-ui": "1.77.0",
     "@theia/ai-ide": "1.77.0",
@@ -37,10 +43,12 @@
   "scripts": {
     "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc -b",
+    "test": "mocha \"test/*.spec.mjs\"",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "update:theia": "ts-node ../../scripts/update-theia-version.ts",
     "update:next": "ts-node ../../scripts/update-theia-version.ts next"
   },
+  "devDependencies": { "archiver": "^5.3.2" },
   "peerDependencies": { "react": "^19.2.8" },
   "exports": {
     "./package.json": "./package.json",

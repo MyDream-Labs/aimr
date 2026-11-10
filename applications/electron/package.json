@@ -29,6 +29,7 @@
         "preferences": {
           "window.zoomLevel": 1,
           "ai-features.AiEnable.enableAI": true,
+          "security.workspace.trust.enabled": false,
           "workbench.startupEditor": "none",
           "toolbar.showToolbar": false,
           "workbench.statusBar.visible": false,
