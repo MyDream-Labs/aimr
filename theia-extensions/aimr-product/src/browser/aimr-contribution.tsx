@@ -1,0 +1,63 @@
+/********************************************************************************
+ * Copyright (C) 2021 Ericsson and others.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the MIT License, which is available in the project root.
+ *
+ * SPDX-License-Identifier: MIT
+ ********************************************************************************/
+
+import { inject, injectable } from '@theia/core/shared/inversify';
+import { CommonMenus } from '@theia/core/lib/browser/common-frontend-contribution';
+import { Command, CommandContribution, CommandRegistry } from '@theia/core/lib/common/command';
+import { MenuContribution, MenuModelRegistry, MenuPath } from '@theia/core/lib/common/menu';
+import { WindowService } from '@theia/core/lib/browser/window/window-service';
+
+export namespace AIMRMenus {
+    export const AIMR_HELP: MenuPath = [...CommonMenus.HELP, 'aimr'];
+}
+export namespace AIMRCommands {
+    export const CATEGORY = 'AIMR';
+    export const REPORT_ISSUE: Command = {
+        id: 'aimr:report-issue',
+        category: CATEGORY,
+        label: 'Report Issue'
+    };
+    export const DOCUMENTATION: Command = {
+        id: 'aimr:documentation',
+        category: CATEGORY,
+        label: 'Documentation'
+    };
+}
+
+@injectable()
+export class AIMRContribution implements CommandContribution, MenuContribution {
+
+    @inject(WindowService)
+    protected readonly windowService!: WindowService;
+
+    static REPORT_ISSUE_URL = 'https://aimr.site';
+    static DOCUMENTATION_URL = 'https://aimr.site';
+
+    registerCommands(commandRegistry: CommandRegistry): void {
+        commandRegistry.registerCommand(AIMRCommands.REPORT_ISSUE, {
+            execute: () => this.windowService.openNewWindow(AIMRContribution.REPORT_ISSUE_URL, { external: true })
+        });
+        commandRegistry.registerCommand(AIMRCommands.DOCUMENTATION, {
+            execute: () => this.windowService.openNewWindow(AIMRContribution.DOCUMENTATION_URL, { external: true })
+        });
+    }
+
+    registerMenus(menus: MenuModelRegistry): void {
+        menus.registerMenuAction(AIMRMenus.AIMR_HELP, {
+            commandId: AIMRCommands.REPORT_ISSUE.id,
+            label: AIMRCommands.REPORT_ISSUE.label,
+            order: '1'
+        });
+        menus.registerMenuAction(AIMRMenus.AIMR_HELP, {
+            commandId: AIMRCommands.DOCUMENTATION.id,
+            label: AIMRCommands.DOCUMENTATION.label,
+            order: '2'
+        });
+    }
+}

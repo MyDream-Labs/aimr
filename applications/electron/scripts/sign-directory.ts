@@ -174,7 +174,7 @@ async function execute(): Promise<void> {
     console.log('Notarizing application...');
     const notarizeResult = child_process.spawnSync(notarizeCommand, [
         path.basename(argv.directory),
-        'eclipse.theia'
+        'site.aimr.app'
     ], {
         cwd: path.dirname(argv.directory),
         maxBuffer: 1024 * 10000,

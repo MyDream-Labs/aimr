@@ -1,6 +1,6 @@
-appId: eclipse.theia.next
-productName: TheiaIDENext
-copyright: Copyright © 2020-2026 Eclipse Foundation, Inc
+appId: site.aimr.app
+productName: AIMR
+copyright: Copyright © 2026 MyDream Labs LLC
 electronDist: ../../node_modules/electron/dist
 electronVersion: 44.9.1
 asar: true
@@ -19,8 +19,8 @@ directories:
 files:
   - src-gen
   - lib
-  - resources/icons/WindowIcon/512-512.png
-  - resources/TheiaIDENextSplash.svg
+  - resources/icons/512x512.png
+  - resources/AIMRSplash.svg
   - scripts
   - "!**node_modules/**"
 extraResources:
@@ -28,11 +28,11 @@ extraResources:
     to: app/plugins
 
 linux:
-  icon: resources/icons/LinuxLauncherIcons
+  icon: resources/icons
   category: Development
   mimeTypes:
     - inode/directory
-  vendor: Eclipse Foundation, Inc
+  vendor: MyDream Labs LLC
   target:
     - deb
     - AppImage
