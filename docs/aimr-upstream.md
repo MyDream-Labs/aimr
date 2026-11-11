@@ -22,8 +22,8 @@ Check this map before adding a mechanism; update it when its location or behavio
 | Help commands / links | `src/browser/aimr-contribution.tsx` | Command and menu contributions |
 | Menu bar toggle | `src/browser/aimr-contribution.tsx`, `aimr-sidebar-menu-widget.tsx`; binding in `aimr-frontend-module.ts` | Top-left ☰ button runs `aimr:toggle-menu`, saving `window.menuBarVisibility` as `visible` or `toggle` in user preferences. Alt can reveal a hidden menu. A small sidebar adapter renders only this item as a direct button; other items use Theia's renderer. |
 | AI registry identity | `src/browser/aimr-ai-registry-configuration.ts` | Tool ID `aimr`; requires a corresponding registry entry |
-| Desktop integration startup | `src/electron-browser/aimr-launcher-contribution.ts`, `aimr-electron-frontend-module.ts` | Rebinds upstream launcher contribution: creates/refreshes AppImage desktop entries without prompts; skips automatic CLI launcher installation/update. Inherits the explicit CLI command. Product depends on launcher to preserve DI module order. |
-| Desktop icon | `src/electron-main/aimr-main-module.ts`, `icon-contribution.ts` | Electron main contribution |
+| Desktop integration startup | `src/electron-browser/aimr-launcher-contribution.ts`, `aimr-electron-frontend-module.ts` | Rebinds upstream launcher contribution: creates/refreshes AppImage desktop entries without prompts; skips automatic CLI launcher installation/update. Inherits the explicit CLI command. Product depends on launcher to preserve DI module order. The Electron hook uses a separate `theiaExtensions` entry so the common frontend remains loaded. |
+| Desktop identity / icon | `src/electron-main/icon-contribution.ts`, `src/node/aimr-desktop-file-endpoint.ts`; backend binding | Resolves the window icon from Electron app resources. A small endpoint subclass shares `site.aimr.app` with package metadata/WM_CLASS; native desktop templates and file creation are reused. Checks actual files even if the old desktop prompt was declined. |
 | Icon source | `resources/favicon.svg` | Canonical SVG; never redraw generated copies |
 | Icons / splash / preload generation | Repository `scripts/generate-aimr-icons.js` | `yarn icons:generate --color '#0d82ff'`; 276×276 splash, centered 240×240 icon, background `#f5f5f5`; splash and preload have no text |
 | Product defaults / launch | Repository `applications/*/package.json` | `theia.frontend.config` and scripts; desktop `start` uses XWayland |
@@ -42,7 +42,7 @@ The current AIMR icon color is `#0d82ff`: use `yarn icons:generate --color '#0d8
 
 All applications use the generated `theia-extensions/aimr-product/resources/preload.html` through `theia.generator.config.preloadTemplate`; this replaces the upstream loading logo without editing framework or upstream preload sources.
 
-Desktop development start scripts pass `--ozone-platform=x11` to restore window positions through XWayland on Linux; native Wayland does not support positioning windows.
+Desktop development start scripts use `electron .` to load AIMR package identity/icon resources, and pass `--ozone-platform=x11` to restore window positions through XWayland on Linux; native Wayland does not support positioning windows.
 
 AIMR Light/Dark are registered in `aimr-product/src/browser/aimr-theme-contribution.ts` using Theia's theme services. They derive from the installed Theia themes and override only status bar colors; application `defaultTheme` selects them. Debugging colors and user-selected themes are preserved.
 

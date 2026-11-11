@@ -14,6 +14,8 @@ import { ConnectionHandler, RpcConnectionHandler } from '@theia/core/lib/common'
 import { cmd } from '@theia/core/lib/common/os';
 import { ContainerModule } from '@theia/core/shared/inversify';
 import { AIMRAgentService, AIMR_AGENT_SERVICE_PATH } from '../common/aimr-agent-service.js';
+import { TheiaDesktopFileServiceEndpoint } from 'theia-ide-launcher-ext/lib/node/desktopfile-endpoint';
+import { AIMRDesktopFileEndpoint } from './aimr-desktop-file-endpoint.js';
 
 export async function isCodexInstalled(): Promise<boolean> {
     const [command, args] = cmd('codex', '--version');
@@ -22,6 +24,7 @@ export async function isCodexInstalled(): Promise<boolean> {
 }
 
 export default new ContainerModule((bind, _unbind, _isBound, rebind) => {
+    rebind(TheiaDesktopFileServiceEndpoint).to(AIMRDesktopFileEndpoint).inSingletonScope();
     rebind(MCPTheiaServerImpl).to(AIMRMCPServer).inSingletonScope();
     bind(AIMRCodexFactory).toConstantValue(createAIMRCodex);
     bind(ConnectionContainerModule).toConstantValue(ConnectionContainerModule.create(({ rebind: rebindConnection }) => {

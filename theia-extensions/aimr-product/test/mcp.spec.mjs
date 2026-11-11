@@ -12,6 +12,10 @@ import { MCPFrontendContribution } from '@theia/ai-mcp-server/lib/browser/mcp-fr
 import settingsModule, { AIMRSettingsMCPContribution } from '../lib/browser/aimr-settings-mcp-contribution.js';
 import upstreamMCP from '@theia/ai-mcp-server/lib/node/mcp-backend-module';
 import backendModule from '../lib/node/aimr-backend-module.js';
+import launcherBackend from 'theia-ide-launcher-ext/lib/node/launcher-backend-module';
+import { TheiaDesktopFileServiceEndpoint } from 'theia-ide-launcher-ext/lib/node/desktopfile-endpoint';
+import { EnvVariablesServer } from '@theia/core/lib/common/env-variables';
+import { AIMRDesktopFileEndpoint } from '../lib/node/aimr-desktop-file-endpoint.js';
 import { AIMRCodexService, AIMRCodexFactory } from '../lib/node/aimr-codex-service.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
@@ -22,7 +26,11 @@ describe('AIMR MCP injections', () => {
         root.bind(PreferenceService).toConstantValue({});
         root.bind(PreferenceSchemaService).toConstantValue({});
         root.bind(JsonSchemaDataStore).toConstantValue({});
-        root.load(settingsModule, upstreamCodex, upstreamMCP, backendModule);
+        root.bind(EnvVariablesServer).toConstantValue({});
+        root.load(settingsModule, upstreamCodex, upstreamMCP, launcherBackend, backendModule);
+        const desktop = root.get(TheiaDesktopFileServiceEndpoint);
+        assert.ok(desktop instanceof AIMRDesktopFileEndpoint);
+        assert.match(desktop.getDesktopFileContents('AIMR', '/tmp/AIMR.AppImage', '/tmp/aimr.png'), /StartupWMClass=site\.aimr\.app\n/);
         assert.ok(root.get(MCPFrontendContribution) instanceof AIMRSettingsMCPContribution);
         const connection = root.createChild();
         connection.load(...root.getAll(ConnectionContainerModule));
