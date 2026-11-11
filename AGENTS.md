@@ -4,6 +4,7 @@ Prefer existing mechanisms over creating new code, files, dependencies, abstract
 Build strong, performant, resource-efficient solutions that are compact, readable, and low-maintenance.
 
 Follow [CONTRIBUTING.md](CONTRIBUTING.md) for development, build, and restart instructions.
+Follow [ARCHITECTURE.md](ARCHITECTURE.md) for product architecture; keep decisions and open questions concise and current.
 Commit on request or before a separate new task; follow-up fixes belong to the current task.
 
 ## Upstream compatibility

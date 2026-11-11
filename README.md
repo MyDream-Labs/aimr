@@ -35,6 +35,8 @@ The user configuration folder is `.aimr`. AIMR product code lives in its own ext
 
 AIMR aims to let users describe a goal, configure tools and workflows with AI, then work in a personalized environment. Planned areas include agent-assisted interface changes, plugin bundles, MCP-based application control, local and cloud execution, and a marketplace. These are product goals, not a claim that each feature is implemented in the current build.
 
+See [ARCHITECTURE.md](ARCHITECTURE.md) for architecture decisions and open questions.
+
 ## Legal and attribution
 
 AIMR is operated by MyDream Labs LLC, 30 N Gould St, STE R, Sheridan, WY 82801, United States. The company file number is 2026-001893245. Product specific terms, privacy information and support contacts should be published for AIMR before providing hosted services.
