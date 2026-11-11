@@ -16,6 +16,9 @@ import { ContainerModule } from '@theia/core/shared/inversify';
 import { AIMRAgentService, AIMR_AGENT_SERVICE_PATH } from '../common/aimr-agent-service.js';
 import { TheiaDesktopFileServiceEndpoint } from 'theia-ide-launcher-ext/lib/node/desktopfile-endpoint';
 import { AIMRDesktopFileEndpoint } from './aimr-desktop-file-endpoint.js';
+import { MCPBackendContribution } from '@theia/ai-mcp-server/lib/node/mcp-theia-server';
+import { IDEScreenshotContribution } from './ide-screenshot-contribution.js';
+import { IDEScreenshotClient, IDE_SCREENSHOT_PATH } from '../common/ide-screenshot.js';
 
 export async function isCodexInstalled(): Promise<boolean> {
     const [command, args] = cmd('codex', '--version');
@@ -31,4 +34,8 @@ export default new ContainerModule((bind, _unbind, _isBound, rebind) => {
         rebindConnection(CodexService).to(AIMRCodexService).inSingletonScope();
     }));
     bind(ConnectionHandler).toConstantValue(new RpcConnectionHandler<AIMRAgentService>(AIMR_AGENT_SERVICE_PATH, () => ({ isCodexInstalled })));
+    bind(IDEScreenshotContribution).toSelf().inSingletonScope();
+    bind(MCPBackendContribution).toService(IDEScreenshotContribution);
+    bind(ConnectionHandler).toDynamicValue(({ container }) => new RpcConnectionHandler<IDEScreenshotClient>(
+        IDE_SCREENSHOT_PATH, client => container.get(IDEScreenshotContribution).connect(client))).inSingletonScope();
 });

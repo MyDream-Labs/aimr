@@ -4,7 +4,7 @@
  ********************************************************************************/
 export const IDE_SERVER = {
     name: 'IDE Control — AIMR', version: '1.0.0',
-    description: 'Inspect and control the running AIMR IDE: settings, commands, extensions, panels and tabs.'
+    description: 'Inspect and control the running AIMR IDE: settings, commands, extensions, panels and tabs; capture visible IDE content.'
 };
 export const IDE_INSTRUCTIONS = 'Use this server to inspect or change the running IDE. Search settings and commands before using unfamiliar IDs. '
     + 'Inspect current state before changing it and verify the result afterward. Tools operate on this IDE instance, not the operating system. '

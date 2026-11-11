@@ -19,6 +19,10 @@ import { AIMRDesktopFileEndpoint } from '../lib/node/aimr-desktop-file-endpoint.
 import { AIMRCodexService, AIMRCodexFactory } from '../lib/node/aimr-codex-service.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { MCPBackendContribution } from '@theia/ai-mcp-server/lib/node/mcp-theia-server';
+import { ConnectionHandler } from '@theia/core/lib/common/messaging/handler';
+import { IDEScreenshotContribution } from '../lib/node/ide-screenshot-contribution.js';
+import { IDE_SCREENSHOT_PATH } from '../lib/common/ide-screenshot.js';
 
 describe('AIMR MCP injections', () => {
     it('resolves the settings contribution and replaces the connection-scoped Codex service', async () => {
@@ -28,6 +32,8 @@ describe('AIMR MCP injections', () => {
         root.bind(JsonSchemaDataStore).toConstantValue({});
         root.bind(EnvVariablesServer).toConstantValue({});
         root.load(settingsModule, upstreamCodex, upstreamMCP, launcherBackend, backendModule);
+        assert.ok(root.getAll(MCPBackendContribution).some(contribution=>contribution instanceof IDEScreenshotContribution));
+        assert.equal(root.getAll(ConnectionHandler).filter(handler=>handler.path===IDE_SCREENSHOT_PATH).length,1);
         const desktop = root.get(TheiaDesktopFileServiceEndpoint);
         assert.ok(desktop instanceof AIMRDesktopFileEndpoint);
         assert.match(desktop.getDesktopFileContents('AIMR', '/tmp/AIMR.AppImage', '/tmp/aimr.png'), /StartupWMClass=site\.aimr\.app\n/);
