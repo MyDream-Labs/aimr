@@ -6,8 +6,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { AIMRDesktopFileEndpoint } from '../lib/node/aimr-desktop-file-endpoint.js';
+import { readFileSync } from 'node:fs';
 
 describe('AIMR desktop composition', () => {
+    (process.env.AIMR_DESKTOP_ENTRY ? it : it.skip)('registers the product display name and window identity', () => {
+        const entry = readFileSync(process.env.AIMR_DESKTOP_ENTRY,'utf8');
+        const app = new ApplicationPackage({projectPath:fileURLToPath(new URL('../../../applications/electron/', import.meta.url))});
+        assert.equal(entry.match(/^Name=(.*)$/m)?.[1],app.props.frontend.config.applicationName);
+        assert.equal(entry.match(/^StartupWMClass=(.*)$/m)?.[1],new AIMRDesktopFileEndpoint().getAppId());
+    });
     it('loads common and desktop contributions after the upstream launcher', () => {
         const app = new ApplicationPackage({projectPath:fileURLToPath(new URL('../../../applications/electron/', import.meta.url))});
         const modules = [...app.frontendElectronModules.values()];

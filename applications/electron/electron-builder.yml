@@ -50,6 +50,9 @@ mac:
     - dmg
     - zip
 linux:
+  desktop:
+    entry:
+      Name: ⌖AIMR
   executableName: aimr
   executableArgs: ["--ozone-platform=x11"]
   syncDesktopName: true

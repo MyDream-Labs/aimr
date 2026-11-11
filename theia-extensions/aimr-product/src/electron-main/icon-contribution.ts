@@ -9,8 +9,9 @@
 
 import * as os from 'os';
 import * as path from 'path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 
-import { ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
+import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
 
 import { injectable } from '@theia/core/shared/inversify';
 import { app, BrowserWindow } from '@theia/core/electron-shared/electron';
@@ -18,11 +19,40 @@ import { app, BrowserWindow } from '@theia/core/electron-shared/electron';
 @injectable()
 export class IconContribution implements ElectronMainApplicationContribution {
 
-    onStart(): void {
+    onStart(application: ElectronMainApplication): void {
         if (os.platform() === 'linux') {
             const icon = path.join(app.getAppPath(), 'resources/icons/512x512.png');
+            if (process.defaultApp) {
+                this.registerDevelopmentDesktopEntry(application, icon);
+            }
             app.on('browser-window-created', (_event, window) => window.setIcon(icon));
             for (const window of BrowserWindow.getAllWindows()) { window.setIcon(icon); }
+        }
+    }
+
+    protected registerDevelopmentDesktopEntry(application: ElectronMainApplication, icon: string): void {
+        const id = application.config.electron.appUserModelId;
+        if (!id) { return; }
+        const directory = path.join(process.env.XDG_DATA_HOME || path.join(os.homedir(), '.local/share'), 'applications');
+        const file = path.join(directory, `${id}.desktop`);
+        // Exec uses desktop-entry escaping, not shell quoting.
+        const quote = (value: string): string => '"' + value.replace(/["\\`$]/g, '\\$&').replace(/\\/g, '\\\\').replace(/%/g, '%%') + '"';
+        const command = [process.execPath, app.getAppPath(), '--ozone-platform=x11'].map(quote).join(' ');
+        const contents = `[Desktop Entry]
+Type=Application
+Name=${application.config.applicationName}
+Exec=${command} %U
+Icon=${icon}
+StartupWMClass=${id}
+Categories=Development;
+`;
+        try {
+            if (!existsSync(file) || readFileSync(file, 'utf8') !== contents) {
+                mkdirSync(directory, { recursive: true });
+                writeFileSync(file, contents);
+            }
+        } catch (error) {
+            console.warn('Could not register the AIMR development desktop entry:', error);
         }
     }
 }

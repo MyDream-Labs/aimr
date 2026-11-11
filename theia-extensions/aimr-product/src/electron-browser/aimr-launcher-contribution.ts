@@ -12,8 +12,7 @@ export class AIMRLauncherContribution extends CreateLauncherCommandContribution 
     @inject(DesktopFileService) protected readonly desktopFiles!: DesktopFileService;
 
     override async onStart(): Promise<void> {
-        const { electron: { uriScheme } } = FrontendApplicationConfigProvider.get();
-        const applicationName = 'AIMR';
+        const { applicationName, electron: { uriScheme } } = FrontendApplicationConfigProvider.get();
         try {
             if (await this.desktopFiles.getState({ applicationName, uriScheme }) !== 'up-to-date') {
                 await this.desktopFiles.createOrUpdateDesktopfile(true, { applicationName, uriScheme, createUrlHandler: true });
