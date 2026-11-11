@@ -19,6 +19,8 @@ import { AIMRDesktopFileEndpoint } from './aimr-desktop-file-endpoint.js';
 import { MCPBackendContribution } from '@theia/ai-mcp-server/lib/node/mcp-theia-server';
 import { IDEScreenshotContribution } from './ide-screenshot-contribution.js';
 import { IDEScreenshotClient, IDE_SCREENSHOT_PATH } from '../common/ide-screenshot.js';
+import { AIMRVoiceLanguage, AIMR_VOICE_LANGUAGE_PATH } from '../common/aimr-voice.js';
+import { AIMRVoiceLanguageService } from './aimr-voice-language.js';
 
 export async function isCodexInstalled(): Promise<boolean> {
     const [command, args] = cmd('codex', '--version');
@@ -27,6 +29,9 @@ export async function isCodexInstalled(): Promise<boolean> {
 }
 
 export default new ContainerModule((bind, _unbind, _isBound, rebind) => {
+    bind(AIMRVoiceLanguage).to(AIMRVoiceLanguageService).inSingletonScope();
+    bind(ConnectionHandler).toDynamicValue(({ container }) => new RpcConnectionHandler<AIMRVoiceLanguage>(
+        AIMR_VOICE_LANGUAGE_PATH, () => container.get(AIMRVoiceLanguage))).inSingletonScope();
     rebind(TheiaDesktopFileServiceEndpoint).to(AIMRDesktopFileEndpoint).inSingletonScope();
     rebind(MCPTheiaServerImpl).to(AIMRMCPServer).inSingletonScope();
     bind(AIMRCodexFactory).toConstantValue(createAIMRCodex);

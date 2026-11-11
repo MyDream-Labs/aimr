@@ -5,6 +5,8 @@
   "description": "AIMR product branding",
   "type": "module",
   "dependencies": {
+    "@xmldom/xmldom": "0.9.12",
+    "lcid": "5.1.0",
     "theia-ide-launcher-ext": "0.1.0-alpha.2",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@openai/codex-sdk": "0.167.0",

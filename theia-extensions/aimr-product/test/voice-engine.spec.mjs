@@ -7,6 +7,7 @@ const tick = () => new Promise(resolve=>setTimeout(resolve,0));
 
 function fixture(loading = Promise.resolve()) {
     const handlers = new Map(), states = [], deliveries = [], requests = [];
+    let language = 'en';
     let loads = 0, capturing = false;
     const audio = new EventEmitter();
     audio.start=()=>{capturing=true;};audio.stop=()=>{capturing=false;};
@@ -16,20 +17,30 @@ function fixture(loading = Promise.resolve()) {
         onAudioChunk(){throw Error('Manual capture reached the upstream VAD pipeline');},
         ensureTranscriber:async()=>{loads++;await (typeof loading==='function'?loading(loads):loading);engine.transcriber=transcriber;}};
     const context={subscriptions:[]};
-    const api={commands:{
+    const api={workspace:{getConfiguration:()=>({get:()=> 'en'})},commands:{
         registerCommand:(id,handler)=>{handlers.set(id,handler);return {dispose:()=>handlers.delete(id)};},
         executeCommand:async(id,args)=>{
             if(id==='aimr.voice.state')states.push(args);
+            else if(id==='aimr.voice.language')return language;
             else if(id==='workbench.action.chat.open')deliveries.push(args);
             else throw Error('Unexpected command '+id);
         }
     }};
     attach(engine,context,api);
-    return {engine,api,states,deliveries,requests,transcriber,get loads(){return loads;},get capturing(){return capturing;},
+    return {engine,api,states,deliveries,requests,transcriber,set language(value){language=value;},get loads(){return loads;},get capturing(){return capturing;},
         start:()=>handlers.get('aimr.voice.startRecording')(),stop:()=>handlers.get('aimr.voice.stopRecording')()};
 }
 
 describe('AIMR manual voice engine', () => {
+    it('returns to idle after immediate Stop with no audio while the first model load is pending', async () => {
+        const model=deferred(),f=fixture(model.promise);
+        await f.start();const stopping=f.stop();
+        assert.equal(f.capturing,false);await tick();
+        assert.equal(f.states.at(-1).state,'transcribing');
+        model.resolve();await stopping;
+        assert.equal(f.states.at(-1).state,'idle');assert.equal(f.requests.length,0);
+        await f.start();await f.stop();assert.equal(f.states.at(-1).state,'idle');assert.equal(f.loads,1);
+    });
     it('captures before model preparation, releases the microphone on Stop and waits for delivery', async () => {
         const model=deferred(),asr=deferred(),delivery=deferred();
         const f=fixture(model.promise);
@@ -64,6 +75,24 @@ describe('AIMR manual voice engine', () => {
             f.engine.onAudioChunk(Buffer.from([99,0])); // Ignore late audio after Stop.
         }
         assert.equal(f.loads,1);
+    });
+    it('freezes the layout language per recording and reuses the multilingual model', async () => {
+        const f=fixture();
+        f.language='ru';await f.start();await tick();f.language='de';
+        f.engine.onAudioChunk(Buffer.from([1,0]));await f.stop();
+        await f.start();f.engine.onAudioChunk(Buffer.from([2,0]));await f.stop();
+        assert.deepEqual(f.requests.map(request=>request.language),['ru','de']);
+        assert.equal(f.loads,1);
+    });
+    it('records immediately while language detection is pending and falls back to the selected language', async () => {
+        const f=fixture(),language=deferred(),execute=f.api.commands.executeCommand;
+        f.api.workspace.getConfiguration=()=>({get:()=> 'fr'});
+        f.api.commands.executeCommand=(id,args)=>id==='aimr.voice.language'?language.promise:execute(id,args);
+        await f.start();assert.equal(f.capturing,true);
+        f.engine.onAudioChunk(Buffer.from([1,0]));const stopping=f.stop();
+        await tick();assert.equal(f.capturing,false);assert.equal(f.requests.length,0);
+        language.reject(Error('Layout unavailable'));await stopping;
+        assert.equal(f.requests[0].language,'fr');
     });
     it('recovers after ASR errors and handles an empty recording without stale text', async () => {
         const f=fixture();const decode=f.transcriber.transcribe;

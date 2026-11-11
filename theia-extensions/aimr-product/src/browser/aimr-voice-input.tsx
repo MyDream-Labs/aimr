@@ -12,8 +12,11 @@ import { MessageService } from '@theia/core/lib/common/message-service';
 import { inject, injectable } from '@theia/core/shared/inversify';
 import * as React from '@theia/core/shared/react';
 import { createPortal } from '@theia/core/shared/react-dom';
+import { AIMRVoiceLanguage, voiceInsertion } from '../common/aimr-voice.js';
+import { KeyboardLayoutProvider } from '@theia/core/lib/common/keyboard/keyboard-layout-provider';
+import { HoverService } from '@theia/core/lib/browser/hover-service';
 
-type VoiceState = 'idle' | 'recording' | 'transcribing';
+type VoiceState = 'idle' | 'starting' | 'recording' | 'transcribing';
 
 @injectable()
 export class AIMRVoiceContribution implements CommandContribution {
@@ -21,19 +24,46 @@ export class AIMRVoiceContribution implements CommandContribution {
     @inject(ApplicationShell) protected readonly shell!: ApplicationShell;
     @inject(ChatInputFocusService) protected readonly focus!: ChatInputFocusService;
     @inject(MessageService) protected readonly messages!: MessageService;
+    @inject(AIMRVoiceLanguage) protected readonly language!: AIMRVoiceLanguage;
+    @inject(KeyboardLayoutProvider) protected readonly keyboard!: KeyboardLayoutProvider;
     protected target: AIChatInputWidget | undefined;
     state: VoiceState = 'idle';
+    currentLanguage: string | undefined;
+    protected layoutKey: string | undefined;
+    protected refreshingLanguage: Promise<void> | undefined;
+    protected stateRevision = 0;
     protected readonly stateChanged = new Emitter<VoiceState>();
     readonly onDidChangeState = this.stateChanged.event;
 
     protected setState(state: VoiceState): void {
+        if (state === 'idle' && this.state !== 'idle') { this.layoutKey = undefined; }
         this.state = state;
+        this.stateRevision++;
         this.stateChanged.fire(state);
     }
 
+    refreshLanguage(): Promise<void> {
+        if (this.refreshingLanguage) { return this.refreshingLanguage; }
+        if (this.state !== 'idle' || this.keyboard.layoutSource !== 'native-keymap') { return Promise.resolve(); }
+        this.refreshingLanguage = (async () => {
+            const { info } = await this.keyboard.getNativeLayout();
+            const key = JSON.stringify(info);
+            if (key === this.layoutKey) { return; }
+            const language = await this.language.getLanguage(info);
+            if (this.state !== 'idle') { return; }
+            this.layoutKey = key;
+            this.currentLanguage = language;
+            this.stateChanged.fire(this.state);
+        })().catch(() => {}).finally(() => { this.refreshingLanguage = undefined; });
+        return this.refreshingLanguage;
+    }
+
     registerCommands(commands: CommandRegistry): void {
+        commands.registerCommand({ id: 'aimr.voice.language' }, { execute: async () =>
+            this.keyboard.layoutSource === 'native-keymap' ? this.language.getLanguage((await this.keyboard.getNativeLayout()).info) : undefined });
         commands.registerCommand({ id: 'aimr.voice.state' }, {
-            execute: ({ state, message }: { state: VoiceState; message?: string }) => {
+            execute: ({ state, message, language }: { state: VoiceState; message?: string; language?: string }) => {
+                if (language) { this.currentLanguage = language; }
                 this.setState(state);
                 if (message) { this.messages.error(message); }
             }
@@ -46,8 +76,12 @@ export class AIMRVoiceContribution implements CommandContribution {
                 const editor = input?.editor?.getControl();
                 const selection = editor?.getSelection();
                 if (!editor || !selection || input?.isDisposed) { throw new Error('Open the AI chat before dictating'); }
-                if (typeof query === 'string' && query) {
-                    editor.executeEdits('aimr-voice', [{ range: selection, text: query, forceMoveMarkers: true }]);
+                const model = editor.getModel();
+                if (typeof query === 'string' && query.trim() && model) {
+                    const value = model.getValue();
+                    const text = voiceInsertion(query, value.slice(0, model.getOffsetAt(selection.getStartPosition())),
+                        value.slice(model.getOffsetAt(selection.getEndPosition())));
+                    editor.executeEdits('aimr-voice', [{ range: selection, text, forceMoveMarkers: true }]);
                 }
                 editor.focus();
             }
@@ -55,15 +89,20 @@ export class AIMRVoiceContribution implements CommandContribution {
     }
 
     async toggle(input: AIChatInputWidget): Promise<void> {
-        if (this.state === 'transcribing') { return; }
+        if (this.state === 'starting' || this.state === 'transcribing') { return; }
         const stopping = this.state === 'recording';
         if (!stopping) { this.target = input; input.editor?.focus(); }
-        if (stopping) { this.setState('transcribing'); }
+        this.setState(stopping ? 'transcribing' : 'starting');
+        const revision = this.stateRevision;
         try {
             const result = await this.commands.executeCommand<{ state: VoiceState }>(
                 stopping ? 'aimr.voice.stopRecording' : 'aimr.voice.startRecording');
-            this.setState(result?.state ?? 'idle');
-        } catch (error) { this.setState('idle'); throw error; }
+            // Notifications may already have completed this recording while a command reply was in flight.
+            if (revision === this.stateRevision) { this.setState(result?.state ?? 'idle'); }
+        } catch (error) {
+            if (revision === this.stateRevision) { this.setState('idle'); }
+            throw error;
+        }
     }
 }
 
@@ -73,21 +112,31 @@ export class AIMRChatInputWidget extends AIChatInputWidget {
 
     protected override render(): React.ReactNode {
         return <>{super.render()}<VoiceButton node={this.node} enabled={this.isEnabled} voice={this.voice}
+            hoverService={this.hoverService}
             toggle={() => this.voice.toggle(this)} onError={error => this.messageService.error(String(error))} /></>;
     }
 }
 
-function VoiceButton({ node, enabled, voice, toggle, onError }: {
+function VoiceButton({ node, enabled, voice, hoverService, toggle, onError }: {
     node: HTMLElement; enabled: boolean; voice: AIMRVoiceContribution;
+    hoverService: HoverService;
     toggle: () => Promise<void>; onError: (error: unknown) => unknown;
 }): React.ReactNode {
     const [host, setHost] = React.useState<HTMLElement>();
-    const [busy, setBusy] = React.useState(false);
-    const [state, setState] = React.useState(voice.state);
+    React.useSyncExternalStore(React.useCallback(listener => {
+        const subscription = voice.onDidChangeState(listener);
+        return () => subscription.dispose();
+    }, [voice]), () => `${voice.state}:${voice.currentLanguage ?? ''}`);
     React.useEffect(() => {
-        const listener = voice.onDidChangeState(setState);
-        return () => listener.dispose();
-    }, [voice]);
+        const refresh = () => {
+            if (node.ownerDocument.visibilityState === 'visible' && node.ownerDocument.hasFocus()) { voice.refreshLanguage(); }
+        };
+        refresh();
+        // Linux native-keymap has no layout-change events. Only resolve language when native info changes.
+        const timer = window.setInterval(refresh, 1000);
+        window.addEventListener('focus', refresh);
+        return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); };
+    }, [voice, node]);
     React.useLayoutEffect(() => {
         // Theia has no input-action contribution yet. Keep this single DOM anchor isolated and tested.
         const toolbar = node.querySelector('.theia-ChatInputOptions-right');
@@ -98,15 +147,18 @@ function VoiceButton({ node, enabled, voice, toggle, onError }: {
         setHost(slot);
         return () => slot.remove();
     }, [node]);
-    const recording = state === 'recording';
-    const transcribing = state === 'transcribing';
+    const recording = voice.state === 'recording';
+    const transcribing = voice.state === 'transcribing';
+    const starting = voice.state === 'starting';
     const title = transcribing ? 'Transcribing…'
-        : recording ? 'Stop recording and insert text' : 'Start voice recording (English)';
-    return host && createPortal(<button type='button' className='option aimr-voice-button' disabled={!enabled || busy || transcribing}
-        title={title} aria-label={title} aria-busy={transcribing} aria-pressed={recording} data-active={recording}
+        : recording ? `Stop recording and insert text${voice.currentLanguage ? ` (${voice.currentLanguage})` : ''}`
+            : 'Start voice recording (keyboard language)';
+    return host && createPortal(<button type='button' className='option aimr-voice-button' disabled={(!enabled && !recording) || starting || transcribing}
+        aria-label={title} aria-busy={transcribing} aria-pressed={recording} data-active={recording}
+        onMouseEnter={event => hoverService.requestHover({ content: title, target: event.currentTarget, position: 'top' })}
         onMouseDown={event => event.preventDefault()} onClick={async () => {
-            setBusy(true);
-            try { await toggle(); } catch (error) { onError(error); } finally { setBusy(false); }
+            try { await toggle(); } catch (error) { onError(error); }
         }}><span className={`codicon codicon-${transcribing ? 'loading codicon-modifier-spin' : recording ? 'primitive-square' : 'mic'}`} />
+        <span className='aimr-voice-language' aria-hidden='true'>{voice.currentLanguage ?? '—'}</span>
     </button>, host);
 }

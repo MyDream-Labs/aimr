@@ -33,4 +33,4 @@ activate = async function(context) {
     return api;
 };
 `);
-console.log('Prepared VoxPilot for AIMR: manual English input');
+console.log('Prepared VoxPilot for AIMR: manual multilingual input');

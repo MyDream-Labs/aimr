@@ -4172,7 +4172,7 @@
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.15.tgz#71ebf80729e4e95221d519ac9b1e1eaea7784907"
   integrity sha512-/5NV/vDALVFDXgLmfsy9TRCBlKwO2LNBFzpzvb9iIj+jR+eSc6DLYYvVOdivT/jm7MtU6TebYuRmzEOI7w40UA==
 
-"@xmldom/xmldom@^0.9.10":
+"@xmldom/xmldom@0.9.12", "@xmldom/xmldom@^0.9.10":
   version "0.9.12"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.9.12.tgz#1f84c07cb95ccf28202299f77b5fd7fc257151e8"
   integrity sha512-5AXjrcMClTryPe9LgZrygpB1lj7s0S9E0+W+AHaVKAVyHanafK86iPSvG5xHVSp/jC+VH1UXu0TAEmY279xH7A==
@@ -14814,3 +14814,15 @@ zod@^3.24.1:
   version "4.6.5"
   resolved "https://registry.yarnpkg.com/zod/-/zod-4.6.5.tgz#e3af3edbdc260239c52f73caad05dbbffe6e82cd"
   integrity sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==
+
+lcid@5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/lcid/-/lcid-5.1.0.tgz#6cca9626e69871354f2c5d9351bbb4aea6550be1"
+  integrity sha512-706SsyRDVQ6G/VOQQpu+527t0WaUduyK2CN+AcjB4bQFJp8WMPFGoZPi/a5bNj3K7odoez+J/pWNL+8L7SBhNQ==
+  dependencies:
+    invert-kv "^4.2.0"
+
+invert-kv@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-4.2.0.tgz#0b7f8a911374d50420e5a763aa57a4ea8703b2b6"
+  integrity sha512-6veZJCvIUzuPAeYmmeAUTvlE1mOpvl33ZQoSBVvuWHJ1Ou5oMgAf95YDmK57+oLcSJrFWXfh/nQFYJl2uLOmrQ==

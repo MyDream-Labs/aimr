@@ -4,7 +4,7 @@
 // keep manual audio outside its VAD/segmentation/finalization pipeline.
 module.exports = function attachManualInput(engine, context, vscode) {
     let session, model;
-    const notify = (state, message) => vscode.commands.executeCommand('aimr.voice.state', { state, message }).catch(() => {});
+    const notify = (state, message, language) => vscode.commands.executeCommand('aimr.voice.state', { state, message, language }).catch(() => {});
     const receive = engine.onAudioChunk.bind(engine);
     engine.onAudioChunk = chunk => {
         if (session) {
@@ -32,6 +32,13 @@ module.exports = function attachManualInput(engine, context, vscode) {
             engine.isListening = true;
             engine.statusBar.setDictating();
         } catch (error) { fail(current, error); throw error; }
+        // Resolve once per recording, in parallel with model loading, without delaying capture.
+        current.language = vscode.commands.executeCommand('aimr.voice.language').catch(() => undefined).then(async detected => {
+            const configured = vscode.workspace.getConfiguration('voxpilot').get('language', 'en');
+            const language = detected || (configured === 'auto' ? 'en' : configured);
+            if (session === current && current.state === 'recording') { await notify('recording', undefined, language); }
+            return language;
+        });
         if (!model) {
             model = engine.ensureTranscriber().catch(error => {
                 engine.transcriber?.dispose();
@@ -59,7 +66,7 @@ module.exports = function attachManualInput(engine, context, vscode) {
                 const pcm = Buffer.concat(current.chunks);
                 current.chunks = [];
                 if (pcm.length && pcm.some(byte => byte !== 0)) {
-                    const result = await engine.transcriber.transcribe(pcm, 'en');
+                    const result = await engine.transcriber.transcribe(pcm, await current.language);
                     const text = result.text.trim();
                     if (text) {
                         await vscode.commands.executeCommand('workbench.action.chat.open', { query: text, isPartialQuery: true });
