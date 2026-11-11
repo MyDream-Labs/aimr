@@ -46,7 +46,8 @@
   "files": ["lib", "src", "resources"],
   "scripts": {
     "clean": "rimraf lib *.tsbuildinfo",
-    "build": "tsc -b",
+    "build": "tsc -b && yarn prepare:voice",
+    "prepare:voice": "node scripts/prepare-voice-plugin.cjs",
     "test": "mocha \"test/*.spec.mjs\"",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "update:theia": "ts-node ../../scripts/update-theia-version.ts",

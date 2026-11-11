@@ -37,9 +37,14 @@ import { AIMRSidebarMenuWidget } from './aimr-sidebar-menu-widget.js';
 import { ProblemContribution } from '@theia/markers/lib/browser/problem/problem-contribution';
 import { AIMRProblemContribution } from './aimr-problem-contribution.js';
 import { AIMRAgentService, AIMR_AGENT_SERVICE_PATH } from '../common/aimr-agent-service.js';
+import { AIChatInputWidget } from '@theia/ai-chat-ui/lib/browser/chat-input-widget';
+import { AIMRChatInputWidget, AIMRVoiceContribution } from './aimr-voice-input.js';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     applyBranding();
+    bind(AIMRVoiceContribution).toSelf().inSingletonScope();
+    bind(CommandContribution).toService(AIMRVoiceContribution);
+    rebind(AIChatInputWidget).to(AIMRChatInputWidget);
     rebind(ProblemContribution).to(AIMRProblemContribution).inSingletonScope();
 
     bindAIMRSettings(bind);

@@ -25,6 +25,10 @@
         "defaultTheme": { "light": "aimr-light", "dark": "aimr-dark" },
         "warnOnPotentiallyInsecureHostPattern": false,
         "preferences": {
+          "voxpilot.model": "whisper-base",
+          "voxpilot.language": "en",
+          "voxpilot.outputAction": "chat",
+          "voxpilot.autoSubmitRules": { "chat": false, "cursor": false, "clipboard": false },
           "ai-features.AiEnable.enableAI": true,
           "workbench.startupEditor": "none",
           "toolbar.showToolbar": false,

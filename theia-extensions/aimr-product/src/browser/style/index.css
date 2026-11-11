@@ -184,3 +184,8 @@ button.aimr-menu-toggle {
 button.aimr-menu-toggle[aria-pressed='true'] i {
     color: var(--theia-activityBar-foreground);
 }
+
+.aimr-voice-slot { display: inline-flex; }
+button.aimr-voice-button { background: transparent; border: 0; color: inherit; font: inherit; }
+button.aimr-voice-button:disabled { opacity: .5; }
+button.aimr-voice-button[data-active='true'] { color: var(--theia-errorForeground); }

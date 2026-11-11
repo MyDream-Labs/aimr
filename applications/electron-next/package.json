@@ -29,6 +29,10 @@
         "brandingVariant": "next",
         "reloadOnReconnect": true,
         "preferences": {
+          "voxpilot.model": "whisper-base",
+          "voxpilot.language": "en",
+          "voxpilot.outputAction": "chat",
+          "voxpilot.autoSubmitRules": { "chat": false, "cursor": false, "clipboard": false },
           "window.zoomLevel": 1,
           "ai-features.AiEnable.enableAI": true,
           "security.workspace.trust.enabled": false,
