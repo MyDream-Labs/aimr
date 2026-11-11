@@ -4,8 +4,16 @@ The MVP ships ordinary Electron for Linux x64: AppImage, Debian package and `SHA
 
 1. Run `corepack yarn release:prepare --ide VERSION` (omit `--theia` unless updating the platform). Review and commit the version changes.
 2. Build locally with the commands below; check the AppImage outside the checkout with an isolated profile. Verify chat/Codex, IDE MCP, built-in extensions and terminal.
-3. Push the release commit and tag `vVERSION`. `.github/workflows/aimr-release.yml` builds, smoke-tests and uploads a **draft prerelease**. It also supports manual runs from Actions on the release commit. Releases are created once; an existing release is not overwritten.
-4. Download the assets, run `sha256sum -c SHA256SUMS`, test, then publish the draft in GitHub Releases. Keep alpha/beta builds marked as prereleases.
+3. Push the release commit and tag `vVERSION`. `.github/workflows/aimr-release.yml` builds, smoke-tests and publishes the **rolling `preview` prerelease**. It also supports manual runs from Actions on the release commit.
+4. Download the assets and run `sha256sum -c SHA256SUMS`. The preview assets and tag are replaced on successful builds; version tags remain unchanged. Keep this mutable channel separate from immutable versioned releases.
+
+Stable website download URLs (available after the first successful preview publication):
+
+- https://github.com/MyDream-Labs/aimr/releases/download/preview/AIMR-linux-x86_64.AppImage
+- https://github.com/MyDream-Labs/aimr/releases/download/preview/AIMR-linux-amd64.deb
+- https://github.com/MyDream-Labs/aimr/releases/download/preview/SHA256SUMS
+
+File names omit the version; application and Debian package metadata retain it. Architecture names follow electron-builder conventions. GitHub's `latest` shortcut excludes prereleases, so use the explicit `preview` URLs for alpha/beta builds.
 
 ```sh
 corepack yarn install --frozen-lockfile

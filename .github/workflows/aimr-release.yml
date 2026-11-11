@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: aimr-release-${{ github.ref }}
+  group: aimr-release
   cancel-in-progress: false
 
 jobs:
@@ -79,7 +79,7 @@ jobs:
             applications/electron/dist/AIMR-*.deb
             applications/electron/dist/SHA256SUMS
 
-  draft:
+  preview:
     needs: build
     runs-on: ubuntu-22.04
     permissions:
@@ -90,12 +90,19 @@ jobs:
         with:
           name: aimr-linux-x64
           path: release
-      - name: Create draft prerelease
+      - name: Publish rolling preview
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           version=$(node -p "require('./applications/electron/package.json').version")
-          tag="v$version"
-          gh release create "$tag" release/* --target "$GITHUB_SHA" --draft --prerelease \
-            --title "AIMR $version" \
-            --notes "Linux x64 preview. Requires Codex CLI on PATH and an existing Codex login. IDE control supports one MCP client at a time. Automatic updates are not enabled."
+          title="AIMR Preview — $version"
+          notes="Linux x64 preview. Version: $version. Source: $GITHUB_SHA. Requires Codex CLI on PATH and an existing Codex login. IDE control supports one MCP client at a time. Automatic updates are not enabled."
+          if gh release view preview >/dev/null 2>&1; then
+            gh release upload preview release/* --clobber
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/preview" \
+              -f sha="$GITHUB_SHA" -F force=true
+            gh release edit preview --draft=false --prerelease --latest=false --title "$title" --notes "$notes"
+          else
+            gh release create preview release/* --target "$GITHUB_SHA" --prerelease --latest=false \
+              --title "$title" --notes "$notes"
+          fi

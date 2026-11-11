@@ -1,5 +1,6 @@
 appId: site.aimr.app
 productName: AIMR
+artifactName: ${productName}-${os}-${arch}.${ext}
 copyright: Copyright © 2026 MyDream Labs LLC
 electronDist: ../../node_modules/electron/dist
 electronVersion: 44.9.1
@@ -73,14 +74,14 @@ nsis:
   uninstallerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   allowToChangeInstallationDirectory: true
   runAfterFinish: false
-  artifactName: ${productName}-${version}-${os}-${arch}-Setup.${ext}
+  artifactName: ${productName}-${os}-${arch}-Setup.${ext}
   license: LICENSE
 dmg:
-  artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+  artifactName: ${productName}-${os}-${arch}.${ext}
 deb:
   packageName: aimr
-  artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+  artifactName: ${productName}-${os}-${arch}.${ext}
 appImage:
-  artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+  artifactName: ${productName}-${os}-${arch}.${ext}
 
 afterPack: ./scripts/after-pack.js
