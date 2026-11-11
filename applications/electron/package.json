@@ -4,7 +4,7 @@
   "description": "AI-powered workspace for work and business",
   "productName": "AIMR",
   "desktopName": "site.aimr.app.desktop",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "main": "scripts/theia-electron-main.js",
   "license": "MIT",
   "author": "MyDream Labs LLC",
@@ -143,8 +143,8 @@
     "fs-extra": "^9.1.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "theia-ide-launcher-ext": "0.1.0-alpha.2",
-    "aimr-product-ext": "0.1.0-alpha.2"
+    "theia-ide-launcher-ext": "0.1.0-alpha.3",
+    "aimr-product-ext": "0.1.0-alpha.3"
   },
   "devDependencies": {
     "@theia/bundle-plugin": "1.77.0",
