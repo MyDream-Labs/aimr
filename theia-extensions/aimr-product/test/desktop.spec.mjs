@@ -14,6 +14,10 @@ describe('AIMR desktop composition', () => {
         const app = new ApplicationPackage({projectPath:fileURLToPath(new URL('../../../applications/electron/', import.meta.url))});
         assert.equal(entry.match(/^Name=(.*)$/m)?.[1],app.props.frontend.config.applicationName);
         assert.equal(entry.match(/^StartupWMClass=(.*)$/m)?.[1],new AIMRDesktopFileEndpoint().getAppId());
+        if (/^Path=/m.test(entry)) {
+            assert.ok(entry.includes('--no-sandbox'));
+            assert.ok(entry.includes('--plugins=local-dir:'));
+        }
     });
     it('loads common and desktop contributions after the upstream launcher', () => {
         const app = new ApplicationPackage({projectPath:fileURLToPath(new URL('../../../applications/electron/', import.meta.url))});

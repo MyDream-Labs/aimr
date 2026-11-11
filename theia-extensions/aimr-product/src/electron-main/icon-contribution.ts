@@ -37,11 +37,15 @@ export class IconContribution implements ElectronMainApplicationContribution {
         const file = path.join(directory, `${id}.desktop`);
         // Exec uses desktop-entry escaping, not shell quoting.
         const quote = (value: string): string => '"' + value.replace(/["\\`$]/g, '\\$&').replace(/\\/g, '\\\\').replace(/%/g, '%%') + '"';
-        const command = [process.execPath, app.getAppPath(), '--ozone-platform=x11'].map(quote).join(' ');
+        // Match the existing Linux package launcher on hosts without a configured SUID helper.
+        const command = [process.execPath, app.getAppPath(),
+            `--plugins=local-dir:${path.resolve(app.getAppPath(), '../../plugins')}`, '--ozone-platform=x11', '--no-sandbox']
+            .map(quote).join(' ');
         const contents = `[Desktop Entry]
 Type=Application
 Name=${application.config.applicationName}
 Exec=${command} %U
+Path=${app.getAppPath()}
 Icon=${icon}
 StartupWMClass=${id}
 Categories=Development;
