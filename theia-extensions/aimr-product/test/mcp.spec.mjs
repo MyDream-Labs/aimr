@@ -84,6 +84,17 @@ live('IDE MCP live frontend (isolated profile)', function () {
         }
     });
     after(async () => { await client?.close(); });
+    it('keeps Problems closed on a fresh layout and allows opening it manually', async function () {
+        if (!process.env.AIMR_MCP_FIRST_RUN) { this.skip(); }
+        assert.ok(!(await call('ide_layout',{action:'inspect',query:'problems'})).items.some(w=>w.area));
+        try {
+            await call('ide_commands',{action:'run',id:'problemsView:toggle'});
+            assert.ok((await call('ide_layout',{action:'inspect',query:'problems'})).items.some(w=>w.visible));
+        } finally {
+            await call('ide_layout',{action:'close',id:'problems'});
+            await call('ide_layout',{action:'hide',area:'bottom'});
+        }
+    });
     it('pages settings and changes, validates and resets a user setting; executes a command', async () => {
         const key = 'workbench.statusBar.visible';
         const original = await call('ide_settings',{action:'get',key});

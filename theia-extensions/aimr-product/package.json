@@ -19,6 +19,7 @@
     "@theia/core": "1.77.0",
     "@theia/debug": "1.77.0",
     "@theia/getting-started": "1.77.0",
+    "@theia/markers": "1.77.0",
     "@theia/memory-inspector": "1.77.0",
     "@theia/monaco": "1.77.0",
     "@theia/monaco-editor-core": "1.108.201",

@@ -34,10 +34,13 @@ import { AIMRGettingStartedWidget } from './aimr-getting-started-widget.js';
 import { AIMRThemeContribution } from './aimr-theme-contribution.js';
 import { AIMRStartupContribution } from './aimr-startup-contribution.js';
 import { AIMRSidebarMenuWidget } from './aimr-sidebar-menu-widget.js';
+import { ProblemContribution } from '@theia/markers/lib/browser/problem/problem-contribution';
+import { AIMRProblemContribution } from './aimr-problem-contribution.js';
 import { AIMRAgentService, AIMR_AGENT_SERVICE_PATH } from '../common/aimr-agent-service.js';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     applyBranding();
+    rebind(ProblemContribution).to(AIMRProblemContribution).inSingletonScope();
 
     bindAIMRSettings(bind);
     [AIMRCommandsMCPContribution, AIMRExtensionsMCPContribution, AIMRLayoutMCPContribution].forEach(contribution =>
