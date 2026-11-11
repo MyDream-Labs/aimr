@@ -17,7 +17,6 @@
     "@theia/ai-chat": "1.77.0",
     "@theia/ai-chat-ui": "1.77.0",
     "@theia/ai-ide": "1.77.0",
-    "@theia/ai-registry": "1.77.0",
     "@theia/core": "1.77.0",
     "@theia/debug": "1.77.0",
     "@theia/getting-started": "1.77.0",
@@ -51,6 +50,7 @@
     "build": "tsc -b && yarn prepare:voice",
     "prepare:voice": "node scripts/prepare-voice-plugin.cjs",
     "test": "mocha \"test/*.spec.mjs\"",
+    "test:live": "node test/run-live.mjs",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "update:theia": "ts-node ../../scripts/update-theia-version.ts",
     "update:next": "ts-node ../../scripts/update-theia-version.ts next"

@@ -36,7 +36,7 @@ export abstract class IDEMCPTool implements MCPFrontendContribution {
         if (name !== this.name) { return undefined; }
         return { inputSchema: this.schema, handler: async input => {
             try {
-                return { status: 'success', ...await this.execute(this.schema.parse(typeof input === 'string' ? JSON.parse(input) : input)) };
+                return { status: 'success', ...await this.execute(typeof input === 'string' ? JSON.parse(input) : input) };
             } catch (error) {
                 return { status: 'error', message: error instanceof Error ? error.message : String(error) };
             }

@@ -180,7 +180,7 @@
     "clean:dist": "rimraf dist",
     "build": "yarn --cwd ../.. workspace aimr-product-ext build && yarn -s rebuild && theia build --app-target=\"electron\" --mode development",
     "build:prod": "yarn --cwd ../.. workspace aimr-product-ext build && yarn -s rebuild && theia build --app-target=\"electron\"",
-    "rebuild": "theia rebuild:electron --cacheRoot ../..",
+    "rebuild": "yarn --cwd ../.. ensure:ffmpeg && theia rebuild:electron --cacheRoot ../..",
     "watch": "concurrently -n compile,build \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
     "start": "electron . --plugins=local-dir:../../plugins --ozone-platform=x11",
     "start:debug": "yarn start --log-level=debug",

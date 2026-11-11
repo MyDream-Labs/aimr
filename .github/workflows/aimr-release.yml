@@ -52,7 +52,7 @@ jobs:
           export XDG_CONFIG_HOME="$profile/xdg-config"
           cd "$RUNNER_TEMP"
           xvfb-run -a bash -euo pipefail -c '
-            setsid "$1" --appimage-extract-and-run "$2/workspace" --electronUserData="$2/electron" --ozone-platform=x11 > "$2/startup.log" 2>&1 &
+            setsid "$1" --appimage-extract-and-run "$2/workspace" --electronUserData="$2/electron" --ozone-platform=x11 --remote-debugging-port=9222 > "$2/startup.log" 2>&1 &
             pid=$!
             trap "kill -- -$pid 2>/dev/null || true" EXIT
             for attempt in {1..90}; do
@@ -60,7 +60,8 @@ jobs:
                  find "$XDG_DATA_HOME/applications" -name "*.desktop" -type f 2>/dev/null | grep -q .; then
                 test ! -e "$THEIA_CONFIG_DIR/globalStorage/theia-ide-launcher/paths.json"
                 AIMR_DESKTOP_ENTRY="$XDG_DATA_HOME/applications/site.aimr.app-launcher.desktop" \
-                  corepack yarn --cwd "$GITHUB_WORKSPACE" workspace aimr-product-ext test
+                AIMR_BROWSER_DEBUG_URL=http://127.0.0.1:9222 AIMR_MCP_FIRST_RUN=1 \
+                  corepack yarn --cwd "$GITHUB_WORKSPACE" workspace aimr-product-ext test:live
                 exit 0
               fi
               if ! kill -0 "$pid" 2>/dev/null; then break; fi

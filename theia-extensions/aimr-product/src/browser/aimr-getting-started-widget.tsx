@@ -15,16 +15,12 @@ import { renderProductName, renderWelcomeCredits } from './branding-util.js';
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
-import { WindowService } from '@theia/core/lib/browser/window/window-service';
 
 @injectable()
 export class AIMRGettingStartedWidget extends GettingStartedWidget {
 
     @inject(VSXEnvironment)
     protected readonly vsxEnvironment!: VSXEnvironment;
-
-    @inject(WindowService)
-    protected readonly windowService!: WindowService;
 
     @inject(PreferenceService)
     protected readonly preferenceService!: PreferenceService;
@@ -64,9 +60,7 @@ export class AIMRGettingStartedWidget extends GettingStartedWidget {
                         {this.renderHelp()}
                     </div>
                     <div className='aimr-welcome-column'>
-                        {renderWelcomeCredits({
-                            windowService: this.windowService
-                        })}
+                        {renderWelcomeCredits()}
                     </div>
                 </div>
             </div>

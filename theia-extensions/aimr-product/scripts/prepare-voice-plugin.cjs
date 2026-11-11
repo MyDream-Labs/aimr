@@ -11,7 +11,7 @@ if (createHash('sha256').update(source).digest('hex') !== '996365a5e08ed46b4085c
 }
 const file = path.join(root, 'package.json');
 const manifest = JSON.parse(fs.readFileSync(file, 'utf8'));
-manifest.version = '0.7.1-aimr.1';
+manifest.version = '0.7.1-aimr.2';
 manifest.displayName = 'VoxPilot for AIMR';
 manifest.repository = { type: 'git', url: 'https://github.com/MyDream-Labs/aimr.git' };
 manifest.bugs = { url: 'https://github.com/MyDream-Labs/aimr/issues' };
@@ -22,8 +22,12 @@ for (const [command, title] of [['aimr.voice.startRecording', 'Start voice recor
 fs.writeFileSync(file, JSON.stringify(manifest, null, 2) + '\n');
 fs.copyFileSync(path.resolve(__dirname, '../resources/voice/manual-input.cjs'), path.join(root, 'dist/aimr-manual-input.cjs'));
 // Let the existing Transformers pipeline handle long recordings and overlap merging.
+const transformersVersion = '4.3.2';
 const adapted = source.replace('const opts = { sampling_rate: 16e3 };',
-    "const opts = { sampling_rate: 16e3, ...(this._isWhisperModel ? { task: 'transcribe', chunk_length_s: 30, stride_length_s: 5 } : {}) };");
+    "const opts = { sampling_rate: 16e3, ...(this._isWhisperModel ? { task: 'transcribe', chunk_length_s: 30, stride_length_s: 5 } : {}) };")
+    .replace('@huggingface/transformers --no-save', `@huggingface/transformers@${transformersVersion} --no-save`)
+    .replace('fs.existsSync(path2.join(transformersDir, "package.json"))) {',
+        `fs.existsSync(path2.join(transformersDir, "package.json")) && JSON.parse(fs.readFileSync(path2.join(transformersDir, "package.json"), "utf8")).version === "${transformersVersion}") {`);
 fs.writeFileSync(path.join(root, 'dist/aimr-extension.js'), adapted + `
 // AIMR manual-input integration. Original extension.js and its MIT license are preserved.
 const activateUpstream = activate;

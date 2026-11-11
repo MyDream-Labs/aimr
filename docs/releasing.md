@@ -27,7 +27,7 @@ cd applications/electron/dist
 sha256sum AIMR-*.AppImage AIMR-*.deb > SHA256SUMS
 ```
 
-`electron package` uses `--publish never`; `package:prod` / `deploy` publish automatically and are not this flow. The workflow checks packaged startup in a fresh profile outside the checkout; authenticated Codex and MCP interaction still require a local smoke check.
+`electron package` uses `--publish never`; `package:prod` / `deploy` publish automatically and are not this flow. The workflow checks packaged startup, MCP operations and voice UI injection in a fresh profile outside the checkout using `test:live` (see CONTRIBUTING.md). Authenticated Codex inference still requires a local smoke check.
 
 Enable GitHub Actions for the repository. Inherited Theia build/Next/image workflows have a one-line repository guard, so they run only in `eclipse-theia/theia-ide`. AIMR builds use the separate release workflow; upstream jobs and schedules otherwise remain unchanged.
 

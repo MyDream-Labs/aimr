@@ -1,20 +1,24 @@
 # TODO
 
-- [ ] Обсудить стартовый проект: домашняя папка пользователя или отдельный проект по умолчанию.
-- [ ] Скилл создания расширений Theia.
-- [ ] Собственный каталог расширений — сначала локальный.
-- [ ] Инструменты для дашбордов, отчётов и таблиц.
-- [ ] Создание и публикация расширений через агента.
+- [ ] Clean up the project.
+- [ ] Decide on the initial workspace: the user's home directory or a dedicated default project.
+- [ ] Tools for dashboards, reports and spreadsheets.
 
 # LATER
 
-- [ ] Голосовой ввод: распознавание во время диктовки.
-- [ ] Создание агентских воркфлоу через агента.
-- [ ] Запуск сценариев по таймеру и внешним событиям.
-- [ ] Локальная телеметрия для анализа и предложений автоматизаций агентом.
-- [ ] Sentry и отключаемая телеметрия для анализа поведения пользователей.
+- [ ] Voice input: transcribe while dictating.
+- [ ] Create agent workflows through the agent.
+- [ ] Run workflows on a schedule and in response to external events.
+- [ ] Local telemetry for analysis and agent-suggested automations.
+
+# MARKETPLACE
+
+- [ ] Our own extension registry, starting locally.
+- [ ] A skill for creating Theia extensions.
+- [ ] Create and publish extensions through the agent.
 
 # PRE-RELEASE
 
-- [ ] Вернуть проверку доверия к workspace (`security.workspace.trust.enabled`) после MVP.
-- [ ] Упрощённый диалог выбора провайдера ИИ.
+- [ ] Restore workspace trust checks (`security.workspace.trust.enabled`) after the MVP.
+- [ ] A simplified AI provider selection dialog.
+- [ ] Sentry and optional telemetry for analyzing user behavior.

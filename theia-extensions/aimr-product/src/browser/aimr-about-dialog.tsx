@@ -12,15 +12,11 @@ import { AboutDialog, AboutDialogProps, ABOUT_CONTENT_CLASS } from '@theia/core/
 import { injectable, inject } from '@theia/core/shared/inversify';
 import { renderAboutSections, renderProductName } from './branding-util.js';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
-import { WindowService } from '@theia/core/lib/browser/window/window-service';
 @injectable()
 export class AIMRAboutDialog extends AboutDialog {
 
     @inject(VSXEnvironment)
     protected readonly environment!: VSXEnvironment;
-
-    @inject(WindowService)
-    protected readonly windowService!: WindowService;
 
     protected vscodeApiVersion!: string;
 
@@ -50,9 +46,7 @@ export class AIMRAboutDialog extends AboutDialog {
             </div>
             {this.renderTitle()}
             <hr className='gs-hr' />
-            {renderAboutSections({
-                windowService: this.windowService
-            })}
+            {renderAboutSections()}
         </div>;
 
     }

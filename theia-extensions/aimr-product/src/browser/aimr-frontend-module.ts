@@ -15,7 +15,6 @@ import { AIMRLayoutMCPContribution } from './aimr-layout-mcp-contribution.js';
 import { bindAIMRSettings } from './aimr-settings-mcp-contribution.js';
 
 import { ChatViewWidget } from '@theia/ai-chat-ui/lib/browser/chat-view-widget';
-import { AIRegistryConfiguration } from '@theia/ai-registry/lib/common/ai-registry-configuration';
 import { WidgetFactory } from '@theia/core/lib/browser';
 import { AboutDialog } from '@theia/core/lib/browser/about-dialog';
 import { FrontendApplicationContribution } from '@theia/core/lib/browser/frontend-application-contribution';
@@ -28,7 +27,6 @@ import { ContainerModule } from '@theia/core/shared/inversify';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { MenuContribution } from '@theia/core/lib/common/menu';
 import { AIMRAboutDialog } from './aimr-about-dialog.js';
-import { AIMRAIRegistryConfiguration } from './aimr-ai-registry-configuration.js';
 import { AIMRContribution } from './aimr-contribution.js';
 import { AIMRGettingStartedWidget } from './aimr-getting-started-widget.js';
 import { AIMRThemeContribution } from './aimr-theme-contribution.js';
@@ -86,9 +84,4 @@ export default new ContainerModule((bind, _unbind, isBound, rebind) => {
         bind(serviceIdentifier).toService(AIMRContribution)
     );
 
-    if (isBound(AIRegistryConfiguration)) {
-        rebind(AIRegistryConfiguration).to(AIMRAIRegistryConfiguration).inSingletonScope();
-    } else {
-        bind(AIRegistryConfiguration).to(AIMRAIRegistryConfiguration).inSingletonScope();
-    }
 });

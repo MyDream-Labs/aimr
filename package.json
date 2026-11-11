@@ -37,6 +37,7 @@
     "yargs": "^17.7.3"
   },
   "scripts": {
+    "ensure:ffmpeg": "node scripts/ensure-ffmpeg.js",
     "icons:generate": "node scripts/generate-aimr-icons.js",
     "clean": "lerna run clean && rimraf node_modules",
     "build": "yarn build:extensions && yarn build:applications",
