@@ -36,7 +36,10 @@ describe('AIMR voice defaults', () => {
                     await new Promise(resolve=>setTimeout(resolve,30));
                     const label=document.querySelector('.aimr-voice-language');
                     const icon=document.querySelector('.aimr-voice-button .codicon');
-                    const visible=label.textContent==='de' && label.getBoundingClientRect().top>=icon.getBoundingClientRect().bottom;
+                    const labelBounds=label.getBoundingClientRect(),iconBounds=icon.getBoundingClientRect();
+                    const sendBounds=document.querySelector('.theia-ChatInputOptions-right .codicon-send').getBoundingClientRect();
+                    const visible=label.textContent==='de' && Math.abs(labelBounds.left-iconBounds.right)<1 && labelBounds.top>iconBounds.top
+                        && Math.abs(iconBounds.top+iconBounds.height/2-sendBounds.top-sendBounds.height/2)<1;
                     const unchangedReads=reads;await voice.refreshLanguage();
                     return [first,second,unchangedReads,reads,visible];
                 } finally {voice.keyboard=original;}
