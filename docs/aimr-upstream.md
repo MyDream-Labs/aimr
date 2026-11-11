@@ -21,6 +21,7 @@ Check this map before adding a mechanism; update it when its location or behavio
 | Help commands / links | `src/browser/aimr-contribution.tsx` | Command and menu contributions |
 | Menu bar toggle | `src/browser/aimr-contribution.tsx`, `aimr-sidebar-menu-widget.tsx`; binding in `aimr-frontend-module.ts` | Top-left ☰ button runs `aimr:toggle-menu`, saving `window.menuBarVisibility` as `visible` or `toggle` in user preferences. Alt can reveal a hidden menu. A small sidebar adapter renders only this item as a direct button; other items use Theia's renderer. |
 | AI registry identity | `src/browser/aimr-ai-registry-configuration.ts` | Tool ID `aimr`; requires a corresponding registry entry |
+| Desktop integration startup | `src/electron-browser/aimr-launcher-contribution.ts`, `aimr-electron-frontend-module.ts` | Rebinds upstream launcher contribution: creates/refreshes AppImage desktop entries without prompts; skips automatic CLI launcher installation/update. Inherits the explicit CLI command. Product depends on launcher to preserve DI module order. |
 | Desktop icon | `src/electron-main/aimr-main-module.ts`, `icon-contribution.ts` | Electron main contribution |
 | Icon source | `resources/favicon.svg` | Canonical SVG; never redraw generated copies |
 | Icons / splash / preload generation | Repository `scripts/generate-aimr-icons.js` | `yarn icons:generate --color '#0d82ff'`; 276×276 splash, centered 240×240 icon, background `#f5f5f5`; splash and preload have no text |

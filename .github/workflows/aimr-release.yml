@@ -48,13 +48,19 @@ jobs:
           profile=$(mktemp -d)
           mkdir "$profile/workspace"
           export THEIA_CONFIG_DIR="$profile/config"
+          export XDG_DATA_HOME="$profile/share"
+          export XDG_CONFIG_HOME="$profile/xdg-config"
           cd "$RUNNER_TEMP"
           xvfb-run -a bash -euo pipefail -c '
             setsid "$1" --appimage-extract-and-run "$2/workspace" --electronUserData="$2/electron" --ozone-platform=x11 > "$2/startup.log" 2>&1 &
             pid=$!
             trap "kill -- -$pid 2>/dev/null || true" EXIT
             for attempt in {1..90}; do
-              if grep -q "application state.*ready" "$2/startup.log"; then exit 0; fi
+              if grep -q "application state.*ready" "$2/startup.log" &&
+                 find "$XDG_DATA_HOME/applications" -name "*.desktop" -type f 2>/dev/null | grep -q .; then
+                test ! -e "$THEIA_CONFIG_DIR/globalStorage/theia-ide-launcher/paths.json"
+                exit 0
+              fi
               if ! kill -0 "$pid" 2>/dev/null; then break; fi
               sleep 1
             done

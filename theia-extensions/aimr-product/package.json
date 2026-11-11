@@ -5,6 +5,7 @@
   "description": "AIMR product branding",
   "type": "module",
   "dependencies": {
+    "theia-ide-launcher-ext": "0.1.0-alpha.1",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@openai/codex-sdk": "0.167.0",
     "@theia/plugin-ext": "1.77.0",
@@ -30,6 +31,8 @@
     "frontend": "lib/browser/aimr-frontend-module",
     "backend": "lib/node/aimr-backend-module",
     "electronMain": "lib/electron-main/aimr-main-module"
+  }, {
+    "frontendElectron": "lib/electron-browser/aimr-electron-frontend-module"
   }],
   "license": "MIT",
   "repository": {
