@@ -22,9 +22,14 @@ function Description(): React.JSX.Element {
     return <>
         <h3 className='gs-section-header'><i className={codicon('info')}></i>About AIMR</h3>
         <p>
-            An AI-powered workspace for work and business. Describe a goal, then shape tools, interfaces
-            and workflows around the work you need to do.
+            AIMR is a new kind of work environment that adapts to you, not the other way around.
+            Describe what you need, and let AI help shape your tools and interfaces.
         </p>
+        <p>
+            Customize your workspace through natural conversation. Work with AI assistants, files, a terminal,
+            and extensions in one place, with support for multiple AI providers and Codex.
+        </p>
+        <p>Built on Eclipse Theia, AIMR brings the flexibility of an IDE to everyday work and business.</p>
         <p><BrowserLink text='Set Goal. Aim. Reach.' url='https://aimr.site' /></p>
     </>;
 }

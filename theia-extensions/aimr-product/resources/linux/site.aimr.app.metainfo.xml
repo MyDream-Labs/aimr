@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>site.aimr.app</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>AIMR</name>
+  <summary>A living AI-powered workspace that adapts to your goals</summary>
+  <developer id="site.aimr">
+    <name>MyDream Labs LLC</name>
+  </developer>
+  <description>
+    <p>AIMR is a new kind of work environment that adapts to you, not the other way around. Describe what you need, and let AI help shape your tools and interfaces.</p>
+    <p>Customize your workspace through natural conversation. Work with AI assistants, files, a terminal, and extensions in one place, with support for multiple AI providers and Codex.</p>
+    <p>Built on Eclipse Theia, AIMR brings the flexibility of an IDE to everyday work and business.</p>
+  </description>
+  <url type="homepage">https://aimr.site</url>
+  <url type="bugtracker">https://github.com/MyDream-Labs/aimr/issues</url>
+  <url type="vcs-browser">https://github.com/MyDream-Labs/aimr</url>
+  <launchable type="desktop-id">site.aimr.app.desktop</launchable>
+  <pkgname>aimr</pkgname>
+  <icon type="stock">aimr</icon>
+  <icon type="remote" width="512" height="512">https://raw.githubusercontent.com/MyDream-Labs/aimr/master/applications/electron/resources/icons/512x512.png</icon>
+  <categories>
+    <category>Development</category>
+    <category>Office</category>
+  </categories>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="0.1.0-alpha.3" date="2026-11-11" type="development" />
+  </releases>
+</component>

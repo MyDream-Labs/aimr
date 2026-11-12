@@ -2,7 +2,7 @@
 
 **Set Goal. Aim. Reach.**
 
-**An AI-powered IDE for work and business.**
+**A living AI-powered workspace that adapts to your goals.**
 
 AIMR is a new kind of working environment that combines AI agents, customizable interfaces, plugins, and workflows into a single platform.
 

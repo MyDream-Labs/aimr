@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "theia-ide-electron-app",
-  "description": "AI-powered workspace for work and business",
+  "description": "A living AI-powered workspace that adapts to your goals",
   "productName": "AIMR",
   "desktopName": "site.aimr.app.desktop",
   "version": "0.1.0-alpha.3",

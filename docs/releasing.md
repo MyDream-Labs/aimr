@@ -4,7 +4,7 @@ The MVP ships ordinary Electron for Linux x64: AppImage, Debian package and `SHA
 
 Desktop packages omit source maps and the Java Extension Pack (including its JVM, Maven and Gradle). Development builds retain source maps. Java support can be installed from the extension registry. Remove cached `plugins/redhat.java` and `plugins/vscjava.*` directories to drop Java from an existing development checkout; packaging also excludes them.
 
-1. Run `corepack yarn release:prepare --ide VERSION` (omit `--theia` unless updating the platform). Review and commit the version changes.
+1. Run `corepack yarn release:prepare --ide VERSION` (omit `--theia` unless updating the platform). Add the version and release date to `theia-extensions/aimr-product/resources/linux/site.aimr.app.metainfo.xml`. Review and commit the version changes.
 2. Build locally with the commands below; check the AppImage outside the checkout with an isolated profile. Verify chat/Codex, IDE MCP, built-in extensions and terminal.
 3. Push the release commit and tag `vVERSION`. `.github/workflows/aimr-release.yml` builds, smoke-tests and publishes the **rolling `preview` prerelease**. It also supports manual runs from Actions on the release commit.
 4. Download the assets and run `sha256sum -c SHA256SUMS`. The preview assets and tag are replaced on successful builds; version tags remain unchanged. Keep this mutable channel separate from immutable versioned releases.
@@ -34,3 +34,7 @@ sha256sum AIMR-*.AppImage AIMR-*.deb > SHA256SUMS
 Enable GitHub Actions for the repository. Inherited Theia build/Next/image workflows have a one-line repository guard, so they run only in `eclipse-theia/theia-ide`. AIMR builds use the separate release workflow; upstream jobs and schedules otherwise remain unchanged.
 
 For an isolated AppImage run, use temporary `THEIA_CONFIG_DIR` and `--electronUserData` directories and a temporary workspace; preserve the real `HOME` so Codex can reuse the existing login. Pass `--appimage-extract-and-run` when FUSE 2 is unavailable (also used by CI). Codex CLI 0.167.0 was verified for the first release. Never upload the profile or logs containing session credentials.
+
+DEB installs `site.aimr.app.metainfo.xml` into `/usr/share/metainfo`. AppStream links package `aimr` with its name, developer, icons, MIT license and release dates for the installed-app list and details page. Reopen App Center after installation to reload metadata. Its local-DEB preview still uses a generic icon/package name. Validate metadata with `appstreamcli validate --no-net theia-extensions/aimr-product/resources/linux/site.aimr.app.metainfo.xml`.
+
+For public Ubuntu App Center discovery, publish a Snap through the Snap Store: register a publisher account/name, build with electron-builder, fill the listing (title, description, icon, screenshots) and release to `beta` before `stable`. AIMR's host CLI/filesystem integration likely needs classic confinement, which requires Store approval and runtime verification. This is a planned distribution channel; no Snap is configured or published yet. Publishing a Snap does not change App Center's local-DEB preview. See [Snap publishing](https://snapcraft.io/docs/releasing-your-app/) and [classic confinement](https://snapcraft.io/docs/explanation/security/classic-confinement/).

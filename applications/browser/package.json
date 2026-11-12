@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "theia-ide-browser-app",
-  "description": "AIMR AI-powered workspace",
+  "description": "A living AI-powered workspace that adapts to your goals",
   "productName": "AIMR",
   "version": "0.1.0-alpha.3",
   "license": "MIT",

@@ -89,6 +89,8 @@ dmg:
 deb:
   packageName: aimr
   artifactName: ${productName}-${os}-${arch}.${ext}
+  fpm:
+    - "../../theia-extensions/aimr-product/resources/linux/site.aimr.app.metainfo.xml=/usr/share/metainfo/site.aimr.app.metainfo.xml"
 appImage:
   artifactName: ${productName}-${os}-${arch}.${ext}
 

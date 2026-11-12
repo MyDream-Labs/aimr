@@ -2,7 +2,15 @@
 
 **Set Goal. Aim. Reach.**
 
-AIMR is an AI-powered workspace for work and business. It brings AI agents, customizable interfaces, plugins and workflows into one environment that can adapt to changing goals. AIMR is in early development; many capabilities described here are planned rather than available today.
+**A living AI-powered workspace that adapts to your goals.**
+
+AIMR is a new kind of work environment that adapts to you, not the other way around. Describe what you need, and let AI help shape your tools and interfaces.
+
+Customize your workspace through natural conversation. Work with AI assistants, files, a terminal, and extensions in one place, with support for multiple AI providers and Codex.
+
+Built on Eclipse Theia, AIMR brings the flexibility of an IDE to everyday work and business.
+
+AIMR is in early development; many capabilities described here are planned rather than available today.
 
 The desktop and browser applications are built on the [Eclipse Theia platform](https://theia-ide.org), an extensible framework for IDEs and tools. AIMR is developed by **MyDream Labs LLC**.
 
