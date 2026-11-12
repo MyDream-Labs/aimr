@@ -16,6 +16,8 @@ manifest.displayName = 'VoxPilot for AIMR';
 manifest.repository = { type: 'git', url: 'https://github.com/MyDream-Labs/aimr.git' };
 manifest.bugs = { url: 'https://github.com/MyDream-Labs/aimr/issues' };
 manifest.main = './dist/aimr-extension.js';
+manifest.contributes.viewsContainers.activityBar.find(container => container.id === 'voxpilot').when = 'false';
+for (const view of manifest.contributes.views.voxpilot) { view.when = 'false'; }
 for (const [command, title] of [['aimr.voice.startRecording', 'Start voice recording'], ['aimr.voice.stopRecording', 'Stop voice recording']]) {
     if (!manifest.contributes.commands.some(item => item.command === command)) { manifest.contributes.commands.push({ command, title }); }
 }

@@ -57,7 +57,7 @@ mac:
 linux:
   desktop:
     entry:
-      Name: ⌖AIMR
+      Name: AIMR
   executableName: aimr
   executableArgs: ["--ozone-platform=x11"]
   syncDesktopName: true

@@ -24,7 +24,7 @@
     "target": "electron",
     "frontend": {
       "config": {
-        "applicationName": "\u2316AIMR",
+        "applicationName": "AIMR",
         "defaultTheme": { "light": "aimr-light", "dark": "aimr-dark" },
         "brandingVariant": "next",
         "reloadOnReconnect": true,

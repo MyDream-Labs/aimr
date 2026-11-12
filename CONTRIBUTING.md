@@ -37,3 +37,5 @@ AIMR_BROWSER_DEBUG_URL=http://127.0.0.1:9222 yarn workspace aimr-product-ext tes
 ```
 
 The runner supplies MCP credentials in memory. Release CI uses it against the packaged AppImage. Desktop rebuilds automatically restore a missing ffmpeg addon.
+
+For a fresh desktop profile, set `THEIA_CONFIG_DIR` and pass `--electronUserData` with new directories (see [release checks](docs/releasing.md)). Normal Linux installs use `~/.aimr` for settings, chat and extension/model caches, and `~/.config/AIMR` for Electron state. Close AIMR and back up both directories before a manual reset; reinstalling a DEB preserves them. Project settings can still override defaults, so test without opening an existing project.
