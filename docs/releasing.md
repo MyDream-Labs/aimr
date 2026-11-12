@@ -2,6 +2,8 @@
 
 The MVP ships ordinary Electron for Linux x64: AppImage, Debian package and `SHA256SUMS`. AIMR versions are independent of Theia versions. Codex CLI must be installed on `PATH` and signed in (`codex login`); AIMR reuses it and does not bundle another CLI or credentials. Automatic updates are not enabled.
 
+Desktop packages omit source maps and the Java Extension Pack (including its JVM, Maven and Gradle). Development builds retain source maps. Java support can be installed from the extension registry. Remove cached `plugins/redhat.java` and `plugins/vscjava.*` directories to drop Java from an existing development checkout; packaging also excludes them.
+
 1. Run `corepack yarn release:prepare --ide VERSION` (omit `--theia` unless updating the platform). Review and commit the version changes.
 2. Build locally with the commands below; check the AppImage outside the checkout with an isolated profile. Verify chat/Codex, IDE MCP, built-in extensions and terminal.
 3. Push the release commit and tag `vVERSION`. `.github/workflows/aimr-release.yml` builds, smoke-tests and publishes the **rolling `preview` prerelease**. It also supports manual runs from Actions on the release commit.

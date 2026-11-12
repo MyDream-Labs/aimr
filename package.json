@@ -73,9 +73,7 @@
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
     "natearcher-ai.voxpilot": "https://open-vsx.org/api/natearcher-ai/voxpilot/0.7.1/file/natearcher-ai.voxpilot-0.7.1.vsix",
-    "vscode-builtin-extensions": "https://github.com/eclipse-theia/vscode-builtin-extensions/releases/download/1.108.2/vscode-builtin-extensions-1.108.2.tar.gz",
-    "vscjava.vscode-java-pack": "https://open-vsx.org/api/vscjava/vscode-java-pack/0.30.5/file/vscjava.vscode-java-pack-0.30.5.vsix",
-    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.27.0/file/vscjava.vscode-java-dependency-0.27.0.vsix"
+    "vscode-builtin-extensions": "https://github.com/eclipse-theia/vscode-builtin-extensions/releases/download/1.108.2/vscode-builtin-extensions-1.108.2.tar.gz"
   },
   "theiaPluginsExcludeIds": [
     "ms-vscode.js-debug-companion",

@@ -24,9 +24,14 @@ files:
   - resources/AIMRSplash.svg
   - scripts
   - "!**node_modules/**"
+  - "!**/*.map"
 extraResources:
   - from: ../../plugins
     to: app/plugins
+    filter:
+      - "**/*"
+      - "!**/*.map"
+      - "!{redhat.java,vscjava.*}/**/*"
   - from: ../../LICENSE
     to: LICENSE
   - from: ../../NOTICE.md
