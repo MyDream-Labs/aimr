@@ -51,14 +51,6 @@ body[data-theia-branding="next"] {
     font-weight: 600;
 }
 
-.gs-text-bold {
-    font-weight: 600;
-}
-
-.gs-text-underline {
-    text-decoration: underline;
-}
-
 /*
  * The welcome page lays out its sections in two columns: what you can do on the left, what the IDE is on
  * the right. `auto-fit` folds them into a single column on a narrow editor without needing a media query.
@@ -163,7 +155,6 @@ body[data-theia-branding="next"] {
 .ad-container {
     padding: 20px;
     width: 720px;
-    height: 700;
 }
 
 ul.theia-aboutExtensions {

@@ -1,15 +1,11 @@
 import assert from 'node:assert/strict';
 import { Container } from '@theia/core/shared/inversify';
-import { JsonSchemaDataStore } from '@theia/core/lib/browser/json-schema-store';
-import { PreferenceSchemaService } from '@theia/core/lib/common/preferences';
 import { page } from '../lib/browser/ide-mcp-tool.js';
-import { PreferenceService } from '@theia/core/lib/common/preferences';
 import { ConnectionContainerModule } from '@theia/core/lib/node/messaging/connection-container-module';
 import { backendGlobal } from '@theia/core/lib/node/backend-global';
 import { CodexService } from '@theia/ai-codex/lib/common/codex-service';
 import upstreamCodex from '@theia/ai-codex/lib/node/codex-backend-module';
-import { MCPFrontendContribution } from '@theia/ai-mcp-server/lib/browser/mcp-frontend-contribution';
-import settingsModule, { AIMRSettingsMCPContribution } from '../lib/browser/aimr-settings-mcp-contribution.js';
+import { AIMRSettingsMCPContribution } from '../lib/browser/aimr-settings-mcp-contribution.js';
 import upstreamMCP from '@theia/ai-mcp-server/lib/node/mcp-backend-module';
 import backendModule from '../lib/node/aimr-backend-module.js';
 import launcherBackend from 'theia-ide-launcher-ext/lib/node/launcher-backend-module';
@@ -25,19 +21,15 @@ import { IDEScreenshotContribution } from '../lib/node/ide-screenshot-contributi
 import { IDE_SCREENSHOT_PATH } from '../lib/common/ide-screenshot.js';
 
 describe('AIMR MCP injections', () => {
-    it('resolves the settings contribution and replaces the connection-scoped Codex service', async () => {
+    it('registers backend contributions and replaces the connection-scoped Codex service', async () => {
         const root = new Container();
-        root.bind(PreferenceService).toConstantValue({});
-        root.bind(PreferenceSchemaService).toConstantValue({});
-        root.bind(JsonSchemaDataStore).toConstantValue({});
         root.bind(EnvVariablesServer).toConstantValue({});
-        root.load(settingsModule, upstreamCodex, upstreamMCP, launcherBackend, backendModule);
+        root.load(upstreamCodex, upstreamMCP, launcherBackend, backendModule);
         assert.ok(root.getAll(MCPBackendContribution).some(contribution=>contribution instanceof IDEScreenshotContribution));
         assert.equal(root.getAll(ConnectionHandler).filter(handler=>handler.path===IDE_SCREENSHOT_PATH).length,1);
         const desktop = root.get(TheiaDesktopFileServiceEndpoint);
         assert.ok(desktop instanceof AIMRDesktopFileEndpoint);
         assert.match(desktop.getDesktopFileContents('AIMR', '/tmp/AIMR.AppImage', '/tmp/aimr.png'), /StartupWMClass=site\.aimr\.app\n/);
-        assert.ok(root.get(MCPFrontendContribution) instanceof AIMRSettingsMCPContribution);
         const connection = root.createChild();
         connection.load(...root.getAll(ConnectionContainerModule));
         assert.ok(connection.get(CodexService) instanceof AIMRCodexService);

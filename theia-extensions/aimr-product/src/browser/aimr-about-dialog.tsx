@@ -8,7 +8,7 @@
  ********************************************************************************/
 
 import * as React from '@theia/core/shared/react';
-import { AboutDialog, AboutDialogProps, ABOUT_CONTENT_CLASS } from '@theia/core/lib/browser/about-dialog';
+import { AboutDialog, ABOUT_CONTENT_CLASS } from '@theia/core/lib/browser/about-dialog';
 import { injectable, inject } from '@theia/core/shared/inversify';
 import { renderAboutSections, renderProductName } from './branding-util.js';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
@@ -20,12 +20,6 @@ export class AIMRAboutDialog extends AboutDialog {
 
     protected vscodeApiVersion!: string;
 
-    constructor(
-        @inject(AboutDialogProps) protected readonly props: AboutDialogProps
-    ) {
-        super(props);
-    }
-
     protected async doInit(): Promise<void> {
         this.vscodeApiVersion = await this.environment.getVscodeApiVersion();
         super.doInit();
@@ -33,22 +27,17 @@ export class AIMRAboutDialog extends AboutDialog {
 
     protected render(): React.ReactNode {
         return <div className={ABOUT_CONTENT_CLASS}>
-            {this.renderContent()}
-        </div>;
-    }
-
-    protected renderContent(): React.ReactNode {
-        return <div className='ad-container'>
-            <div className='ad-float'>
-                <div className='ad-logo'>
+            <div className='ad-container'>
+                <div className='ad-float'>
+                    <div className='ad-logo'>
+                    </div>
+                    {this.renderExtensions()}
                 </div>
-                {this.renderExtensions()}
+                {this.renderTitle()}
+                <hr className='gs-hr' />
+                {renderAboutSections()}
             </div>
-            {this.renderTitle()}
-            <hr className='gs-hr' />
-            {renderAboutSections()}
         </div>;
-
     }
 
     protected renderTitle(): React.ReactNode {

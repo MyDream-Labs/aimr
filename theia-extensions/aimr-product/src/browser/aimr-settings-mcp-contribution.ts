@@ -2,12 +2,11 @@
  * Copyright (C) 2026 MyDream Labs LLC.
  * SPDX-License-Identifier: MIT
  ********************************************************************************/
-import { MCPFrontendContribution } from '@theia/ai-mcp-server/lib/browser/mcp-frontend-contribution';
 import { PreferenceScope, PreferenceService, PreferenceSchemaService } from '@theia/core/lib/common/preferences';
 import { JsonSchemaDataStore } from '@theia/core/lib/browser/json-schema-store';
 import URI from '@theia/core/lib/common/uri';
 import Ajv from '@theia/core/shared/ajv';
-import { ContainerModule, inject, injectable, interfaces } from '@theia/core/shared/inversify';
+import { inject, injectable } from '@theia/core/shared/inversify';
 import { z } from 'zod';
 import { IDEMCPTool, page, pageFields, required } from './ide-mcp-tool.js';
 
@@ -53,7 +52,3 @@ export class AIMRSettingsMCPContribution extends IDEMCPTool {
         return { key, value: this.preferences.get(key), overrides: this.preferences.inspect(key), schema: definition };
     }
 }
-export function bindAIMRSettings(bind: interfaces.Bind): void {
-    bind(MCPFrontendContribution).to(AIMRSettingsMCPContribution).inSingletonScope();
-}
-export default new ContainerModule(bindAIMRSettings);

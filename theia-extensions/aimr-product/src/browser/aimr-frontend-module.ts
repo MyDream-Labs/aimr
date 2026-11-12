@@ -12,7 +12,7 @@ import { MCPFrontendContribution } from '@theia/ai-mcp-server/lib/browser/mcp-fr
 import { AIMRCommandsMCPContribution } from './aimr-commands-mcp-contribution.js';
 import { AIMRExtensionsMCPContribution } from './aimr-extensions-mcp-contribution.js';
 import { AIMRLayoutMCPContribution } from './aimr-layout-mcp-contribution.js';
-import { bindAIMRSettings } from './aimr-settings-mcp-contribution.js';
+import { AIMRSettingsMCPContribution } from './aimr-settings-mcp-contribution.js';
 
 import { ChatViewWidget } from '@theia/ai-chat-ui/lib/browser/chat-view-widget';
 import { WidgetFactory } from '@theia/core/lib/browser';
@@ -39,7 +39,7 @@ import { AIChatInputWidget } from '@theia/ai-chat-ui/lib/browser/chat-input-widg
 import { AIMRChatInputWidget, AIMRVoiceContribution } from './aimr-voice-input.js';
 import { AIMRVoiceLanguage, AIMR_VOICE_LANGUAGE_PATH } from '../common/aimr-voice.js';
 
-export default new ContainerModule((bind, _unbind, isBound, rebind) => {
+export default new ContainerModule((bind, _unbind, _isBound, rebind) => {
     applyBranding();
     bind(AIMRVoiceLanguage).toDynamicValue(context => ServiceConnectionProvider.createProxy<AIMRVoiceLanguage>(context.container, AIMR_VOICE_LANGUAGE_PATH))
         .inSingletonScope();
@@ -48,8 +48,7 @@ export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     rebind(AIChatInputWidget).to(AIMRChatInputWidget);
     rebind(ProblemContribution).to(AIMRProblemContribution).inSingletonScope();
 
-    bindAIMRSettings(bind);
-    [AIMRCommandsMCPContribution, AIMRExtensionsMCPContribution, AIMRLayoutMCPContribution].forEach(contribution =>
+    [AIMRSettingsMCPContribution, AIMRCommandsMCPContribution, AIMRExtensionsMCPContribution, AIMRLayoutMCPContribution].forEach(contribution =>
         bind(MCPFrontendContribution).to(contribution).inSingletonScope());
 
     rebind(ChatViewWidget).toSelf().onActivation((_context, widget) => {
@@ -73,11 +72,7 @@ export default new ContainerModule((bind, _unbind, isBound, rebind) => {
         id: GettingStartedWidget.ID,
         createWidget: () => context.container.get<AIMRGettingStartedWidget>(AIMRGettingStartedWidget),
     })).inSingletonScope();
-    if (isBound(AboutDialog)) {
-        rebind(AboutDialog).to(AIMRAboutDialog).inSingletonScope();
-    } else {
-        bind(AboutDialog).to(AIMRAboutDialog).inSingletonScope();
-    }
+    rebind(AboutDialog).to(AIMRAboutDialog).inSingletonScope();
 
     bind(AIMRContribution).toSelf().inSingletonScope();
     [CommandContribution, MenuContribution, FrontendApplicationContribution].forEach(serviceIdentifier =>

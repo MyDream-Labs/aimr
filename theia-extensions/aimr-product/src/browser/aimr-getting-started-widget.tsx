@@ -9,7 +9,6 @@
 
 import * as React from '@theia/core/shared/react';
 
-import { PreferenceService } from '@theia/core/lib/common';
 import { inject, injectable } from '@theia/core/shared/inversify';
 import { renderProductName, renderWelcomeCredits } from './branding-util.js';
 
@@ -21,9 +20,6 @@ export class AIMRGettingStartedWidget extends GettingStartedWidget {
 
     @inject(VSXEnvironment)
     protected readonly vsxEnvironment!: VSXEnvironment;
-
-    @inject(PreferenceService)
-    protected readonly preferenceService!: PreferenceService;
 
     protected vscodeApiVersion!: string;
 
