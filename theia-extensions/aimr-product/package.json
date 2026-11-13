@@ -1,13 +1,13 @@
 {
   "private": true,
   "name": "aimr-product-ext",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.5",
   "description": "AIMR product branding",
   "type": "module",
   "dependencies": {
     "@xmldom/xmldom": "0.9.12",
     "lcid": "5.1.0",
-    "theia-ide-launcher-ext": "0.1.0-alpha.3",
+    "theia-ide-launcher-ext": "0.1.0-alpha.5",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@openai/codex-sdk": "0.167.0",
     "@theia/plugin-ext": "1.77.0",

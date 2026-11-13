@@ -4,7 +4,7 @@
   "description": "A living AI-powered workspace that adapts to your goals",
   "productName": "AIMR",
   "desktopName": "site.aimr.app.desktop",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.5",
   "main": "scripts/theia-electron-main.js",
   "license": "MIT",
   "author": "MyDream Labs LLC",
@@ -145,8 +145,8 @@
     "fs-extra": "^9.1.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "theia-ide-launcher-ext": "0.1.0-alpha.3",
-    "aimr-product-ext": "0.1.0-alpha.3"
+    "theia-ide-launcher-ext": "0.1.0-alpha.5",
+    "aimr-product-ext": "0.1.0-alpha.5"
   },
   "devDependencies": {
     "@theia/bundle-plugin": "1.77.0",
